@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+<<<<<<< HEAD
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/payment/Payment.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/user/UserBills.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/user/user_dashboard.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/user/Profile.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/main/login.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/Bills/BillsReceipt.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/admin/Setting.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/Bills/AddBills.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/user/Settings.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/user/PayBill.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/admin/Logs.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/admin/admin_dashboard.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/Bills/Bills.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/main/register.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/config/config.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/admin/AddUser.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/main/landing.java</file>
+            <file>file:/C:/Users/GWAPOKA/Desktop/nengasca/ebs/src/admin/Edituser.java</file>
+=======
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/payment/Payment.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/config/Print.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/config/billsmodel.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/config/usersession.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/Bills/StatementOfAccount.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/ActionLogger.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/config/config.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/Logs.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/user/UserBills.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/Bills/EditBill.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/main/login.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/Bills/Bills.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/admin_dashboard.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/AddUser.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/main/register.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/main/landing.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/user/Profile.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/Setting.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/admin/Edituser.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/Bills/AddBills.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/user/user_dashboard.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/user/Settings.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/Bills/BillReceipt.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/ebs/ebs/src/user/PayBill.java</file>
+>>>>>>> b311abd4561a4f8e3f37afc85dc5563686ca6467
+        </group>
+    </open-files>
+</project-private>
