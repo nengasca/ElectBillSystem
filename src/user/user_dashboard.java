@@ -54,7 +54,7 @@ public class user_dashboard extends javax.swing.JFrame {
 
     try {
         con = DriverManager.getConnection("jdbc:sqlite:ebs.db"); 
-        String query = "SELECT bill_id, amount, status FROM bills WHERE username = ?";
+        String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE username = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, this.name);
         

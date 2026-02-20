@@ -425,11 +425,12 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_billsbtnMouseClicked
 
     private void billsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseEntered
-        billsbtn.setBackground(hoverColor);
+        billsbtn.setBackground(defaultColor);
     }//GEN-LAST:event_billsbtnMouseEntered
 
     private void billsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseExited
-        billsbtn.setBackground(defaultColor);
+        
+        billsbtn.setBackground(hoverColor);
     }//GEN-LAST:event_billsbtnMouseExited
 
     private void paymentbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentbtnMouseClicked
@@ -474,14 +475,17 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_logsbtnMouseExited
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-     String searchText = "%" + searchfield.getText().trim() + "%";
-    
-    // SQL query para sa pag-search sa tanang columns
+   
+    String search = searchfield.getText().trim();
+    // Use a clean SQL string
     String sql = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users WHERE "
-               + "u_fname LIKE ? OR u_lname LIKE ? OR u_username LIKE ? OR u_role LIKE ?";
+               + "u_fname LIKE '%" + search + "%' OR "
+               + "u_lname LIKE '%" + search + "%' OR "
+               + "u_username LIKE '%" + search + "%'";
     
-    // Gamita ang displayData method gikan sa imong config class
-    db.displayData(sql, usertable, searchText, searchText, searchText, searchText);
+    // Call the existing displayData method
+    db.displayData(sql, usertable);
+
 
     }//GEN-LAST:event_searchbtnActionPerformed
 
@@ -548,23 +552,21 @@ public class admin_dashboard extends javax.swing.JFrame {
             "Confirm Delete", JOptionPane.YES_NO_OPTION);
     
     if (confirm == JOptionPane.YES_OPTION) {
-        // Gamita ang try-with-resources para automatic ma-close ang connection
-        try (Connection con = db.connectDB()) { // Gamita ang connectDB() kay mao ni ang nag-exist sa imong config
+        // Inside deleteuserActionPerformed:
+        try (Connection con = db.connectDB(); 
+             PreparedStatement pst = con.prepareStatement("DELETE FROM users WHERE u_id = ?")) {
+
             int userId = Integer.parseInt(usertable.getValueAt(selectedRow, 0).toString());
-            String query = "DELETE FROM users WHERE u_id = ?";
-            PreparedStatement pst = con.prepareStatement(query);
             pst.setInt(1, userId);
-            
             pst.executeUpdate();
+
             JOptionPane.showMessageDialog(this, "User deleted successfully.");
-            populateUserTable(); // Refresh ang table
-            
+            populateUserTable(); 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error sa pag-delete: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
+
     }
-
-
     }//GEN-LAST:event_deleteuserActionPerformed
 
     private void searchfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchfieldActionPerformed
@@ -647,25 +649,13 @@ public class admin_dashboard extends javax.swing.JFrame {
     }
 
    private void populateUserTable() {
-    try {
-        // Query para sa SQLite
-        String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users";
-        
-        java.sql.ResultSet rs = db.getData(query);
-        
-        if (rs != null) {
-            // Mao ni ang mopa-display sa data
-            usertable.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
-            System.out.println("Data loaded successfully!");
-        } else {
-            System.out.println("ResultSet is null.");
-        }
-        
-    } catch (Exception e) {
-        // I-display ang actual error kung ngano dili makita ang table
-        JOptionPane.showMessageDialog(this, "Table Display Error: " + e.getMessage());
-        e.printStackTrace();
-    }
+    // This query matches your ebs.db "users" table structure
+    String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users";
+    
+    // Use the new method from config
+    db.populateTable(query, usertable);
+    
+    System.out.println("Table updated using manual Vector mapping (No rs2xml needed).");
 }
 
     // Siguroa nga ang katapusan sa imong file kay ang Variables Declaration ra

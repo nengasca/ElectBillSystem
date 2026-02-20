@@ -215,7 +215,7 @@ public class AddUser extends javax.swing.JFrame {
         java.sql.Connection con = conf.connectDB(); // Gamiton imong connectDB gikan sa config
 
         // Query: Siguroa nga sakto ang column names sa imong MySQL table (u_firstname, etc.)
-        String query = "INSERT INTO users (u_firstname, u_lastname, u_address, u_email, u_username, u_password, u_role, u_status) "
+        String query = "INSERT INTO users (u_fname, u_lname, u_email, u_address, u_username, u_password, u_role, u_status) "
                      + "VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')";
 
         java.sql.PreparedStatement pst = con.prepareStatement(query);

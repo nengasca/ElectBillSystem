@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import net.proteanit.sql.DbUtils;
+import java.util.Vector; // Add this import at the top
+import javax.swing.table.DefaultTableModel; // Add this import at the top
+import java.sql.ResultSetMetaData; // Add this import at the top
 
 
 public class config {
@@ -38,11 +40,12 @@ public class config {
     }
 
     // Method used by admin_dashboard to retrieve result sets
-   public java.sql.ResultSet getData(String query) throws java.sql.SQLException {
-    java.sql.Connection conn = connectDB();
-    java.sql.Statement stmt = conn.createStatement();
-    return stmt.executeQuery(query);
-}
+    public java.sql.ResultSet getData(String query) throws java.sql.SQLException {
+        java.sql.Connection conn = connectDB();
+        java.sql.Statement stmt = conn.createStatement();
+        return stmt.executeQuery(query);
+    
+    }
     public Connection getConnection() {
         return connectDB();
     }
@@ -60,42 +63,48 @@ public class config {
         }
     }
 
-        public void displayData(String sql, javax.swing.JTable table, Object... values) {
-    try (Connection conn = connectDB();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        
-        // Set the parameters for the search
-        for (int i = 0; i < values.length; i++) {
-            pstmt.setObject(i + 1, values[i]);
-        }
+        // USE TRY-WITH-RESOURCES to ensure connections close automatically
+    public void displayData(String sql, javax.swing.JTable table) {
+        try (Connection conn = connectDB();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
-        try (ResultSet rs = pstmt.executeQuery()) {
-            // Automatically maps the filtered ResultSet to your JTable
-            table.setModel(DbUtils.resultSetToTableModel(rs));
-        }
-        
-    } catch (SQLException e) {
-        System.out.println("Error filtering data: " + e.getMessage());
-    }
-}
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
 
-    // Method para sa INSERT, UPDATE, ug DELETE sa database
-     public int insertData(String sql) {
-    int result = 0;
-    try {
-        Connection conn = connectDB();
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.executeUpdate();
-        System.out.println("Data inserted successfully!");
-        result = 1; // Mobalik og 1 kung malampuson
-        pst.close();
-        conn.close();
-    } catch (SQLException e) {
-        System.out.println("Insert Error: " + e.getMessage());
-        result = 0; // Mobalik og 0 kung naay error
+            Vector<String> columnNames = new Vector<>();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+
+            Vector<Vector<Object>> data = new Vector<>();
+            while (rs.next()) {
+                Vector<Object> vector = new Vector<>();
+                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                    vector.add(rs.getObject(columnIndex));
+                }
+                data.add(vector);
+            }
+            table.setModel(new DefaultTableModel(data, columnNames));
+
+        } catch (SQLException e) {
+            System.out.println("Error displaying data: " + e.getMessage());
+        }
+        // The "try (...)" block closes everything automatically here!
     }
-    return result;
-}
+
+// Update insertData to close the connection properly
+    public int insertData(String sql) {
+        try (Connection conn = connectDB();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            int result = pst.executeUpdate();
+            System.out.println("Data processed successfully!");
+            return result; 
+        } catch (SQLException e) {
+            System.out.println("Database Error: " + e.getMessage());
+            return 0;
+        }
+    }
 
     public static class usersession {
         private static usersession instance;
@@ -140,4 +149,35 @@ public class config {
         public billsmodel() {
         }
     }
+    public void populateTable(String query, javax.swing.JTable table) {
+    try (Connection conn = connectDB();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(query)) {
+
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        // 1. Extract Column Names from ebs.db
+        Vector<String> columnNames = new Vector<>();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // 2. Extract Row Data
+        Vector<Vector<Object>> data = new Vector<>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        // 3. Apply to your JTable
+        table.setModel(new DefaultTableModel(data, columnNames));
+
+    } catch (SQLException e) {
+        System.out.println("Error populating table: " + e.getMessage());
+    }
+}
 }

@@ -395,7 +395,7 @@ if (searchText.isEmpty()) {
 
 try {
     // 2. I-define ang imong SQL query string
-    String query = "SELECT b.b_id, u.account_number, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
+    String query = "SELECT b.b_id, u.account_number, b.b_month, b.kwh_used, b.b_amount, b.b_due_date, b.b_status " +
                    "FROM tbl_bill b JOIN users u ON b.user_id = u.id " +
                    "WHERE ..."; // sumpay sa imong LIKE conditions
 

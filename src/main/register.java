@@ -88,6 +88,11 @@ public class register extends javax.swing.JFrame {
         registerbtn.setText("Register");
         registerbtn.setBorder(null);
         registerbtn.setPreferredSize(new java.awt.Dimension(350, 40));
+        registerbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                registerbtnMouseClicked(evt);
+            }
+        });
         registerbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerbtnActionPerformed(evt);
@@ -246,6 +251,10 @@ public class register extends javax.swing.JFrame {
     private void emailfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailfieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_emailfieldActionPerformed
+
+    private void registerbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerbtnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registerbtnMouseClicked
 
     /**
      * @param args the command line arguments

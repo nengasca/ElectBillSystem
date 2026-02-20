@@ -124,56 +124,35 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_registerBtnMouseClicked
 
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
-   String user = UserField.getText().trim();
-    String pass = new String(PasswordField.getPassword()).trim();
+                                     
+        String username = UserField.getText();
+        String password = new String(PasswordField.getPassword());
 
-    if (user.isEmpty() || pass.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please fill in all the blanks.");
-        return;
-    }
+        try {
+            config db = new config();
+            String query = "SELECT * FROM users WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
+            ResultSet rs = db.getData(query);
 
-    config db = new config();
-    try {
-        // Query para i-verify ang user
-        String query = "SELECT * FROM users WHERE u_username = '" + user + "' AND u_password = '" + pass + "'";
-        java.sql.ResultSet rs = db.getData(query);
-
-        if (rs.next()) {
-            // --- DIRI NIMO I-PASTE ANG IMONG CODE ---
-            String status = rs.getString("u_status");
-            
-            if (status.equalsIgnoreCase("Active")) {
-                // I-save ang data sa Session
-                config.usersession session = config.usersession.getInstance();
-                session.setId(rs.getInt("u_id"));
-                session.setFirstname(rs.getString("u_fname"));
-                session.setLastname(rs.getString("u_lname"));
-                session.setRole(rs.getString("u_role"));
-                session.setAccNum(rs.getString("u_accnum"));
-
-                String role = session.getRole();
-                String fNameFromDB = session.getFirstname();
-
+            if (rs.next()) {
+                String role = rs.getString("u_role");
+                String name = rs.getString("u_fname");
+                
+                JOptionPane.showMessageDialog(null, "Login Successful!");
+                
                 if (role.equalsIgnoreCase("Admin")) {
-                    JOptionPane.showMessageDialog(this, "Login Successful! Welcome Admin " + fNameFromDB);
-                    new admin.admin_dashboard(fNameFromDB).setVisible(true);
-                    this.dispose(); 
-                } 
-                else if (role.equalsIgnoreCase("User")) {
-                    JOptionPane.showMessageDialog(this, "Login Successful! Welcome " + fNameFromDB);
-                    new user.user_dashboard(fNameFromDB).setVisible(true);
-                    this.dispose(); 
+                    new admin_dashboard(name).setVisible(true);
+                } else {
+                    new user_dashboard(name).setVisible(true);
                 }
+                this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Your account is " + status + ".", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid Username or Password");
             }
-            // --- KATAPUSAN SA IMONG CODE ---
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid Username or Password!");
+            rs.close(); // IMPORTANT: Close to prevent locking
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
-    }
+    
 
     }//GEN-LAST:event_loginbtnActionPerformed
 
