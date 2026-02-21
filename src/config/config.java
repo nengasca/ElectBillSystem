@@ -1,6 +1,7 @@
 package config;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,18 +95,31 @@ public class config {
     }
 
 // Update insertData to close the connection properly
-    public int insertData(String sql) {
-        try (Connection conn = connectDB();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            int result = pst.executeUpdate();
-            System.out.println("Data processed successfully!");
-            return result; 
-        } catch (SQLException e) {
-            System.out.println("Database Error: " + e.getMessage());
-            return 0;
-        }
+   // Sa config.java
+     public int insertData(String sql) {
+    int result = 0;
+    try {
+        Connection conn = connectDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        result = pst.executeUpdate();
+        System.out.println("Data inserted successfully!");
+        pst.close();
+        conn.close();
+    } catch (SQLException e) {
+        System.out.println("Database Error: " + e.getMessage());
     }
+    return result; // Mobalik og 1 kung success, 0 kung failed
+}
 
+   public void updateData(String sql) {
+    try (Connection conn = connectDB(); 
+         java.sql.PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.executeUpdate();
+        System.out.println("Bill status updated to Paid.");
+    } catch (java.sql.SQLException e) {
+        System.out.println("Update Error: " + e.getMessage());
+    }
+}
     public static class usersession {
         private static usersession instance;
         private int id;
@@ -147,6 +161,10 @@ public class config {
     public static class billsmodel {
 
         public billsmodel() {
+        }
+
+        public billsmodel(int aInt, String string, String string0, int aInt0, double aDouble, Date date, String string1) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
     public void populateTable(String query, javax.swing.JTable table) {

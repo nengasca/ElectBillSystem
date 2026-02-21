@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import main.login; 
 import Bills.BillReceipt;
 import Bills.Bills;
+import Bills.StatementOfAccount;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 /**
@@ -34,12 +35,12 @@ public class user_dashboard extends javax.swing.JFrame {
 
     // 2. CONSTRUCTOR (Diri ang tawag sa method)
     public user_dashboard(String loginName) {
-        initComponents(); 
-        this.name = loginName;
-        welcometxt.setText("Welcome, " + loginName);
-        
-        loadUserBills(); // <--- GATAWAG SA METHOD
-    }
+    initComponents(); 
+    this.name = loginName; 
+    welcometxt.setText("Welcome, " + loginName);
+    
+    loadUserBills(); // <--- Kinahanglan naa ni para ma-refresh ang table
+}
 
     user_dashboard() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -48,7 +49,7 @@ public class user_dashboard extends javax.swing.JFrame {
     // 3. METHOD DEFINITION (Ibutang ni sa ubos sa Constructor)
     private void loadUserBills() {
     // I-define ang columns
-    String[] columnNames = {"Bill ID", "Amount", "Status"};
+    String[] columnNames = {"Bill ID", "b_amount", "b_status"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0);
     mybillstable.setModel(model); 
 
@@ -62,8 +63,8 @@ public class user_dashboard extends javax.swing.JFrame {
         
         while(rs.next()) {
             String id = rs.getString("bill_id");
-            String amount = rs.getString("amount");
-            String status = rs.getString("status");
+            String amount = rs.getString("b_amount");
+            String status = rs.getString("b_status");
             model.addRow(new Object[]{id, amount, status});
         }
     } catch (Exception e) {
@@ -334,69 +335,63 @@ public class user_dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void paymybillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymybillsActionPerformed
-    int selectedRow = mybillstable.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Palihug pagpili og bill.");
-        return;
+    int row = mybillstable.getSelectedRow();
+    if(row != -1) {
+        String id = mybillstable.getValueAt(row, 0).toString();
+        String amount = mybillstable.getValueAt(row, 1).toString();
+
+        PayBill pb = new PayBill(id, amount, this.name); // Saktong constructor
+        pb.setVisible(true);
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a bill from the table!");
     }
-
-    // Kuhaa ang Bill ID ug Amount
-    String billID = mybillstable.getValueAt(selectedRow, 0).toString();
-    String amount = mybillstable.getValueAt(selectedRow, 1).toString();
-
-    // I-pass ang 'this' (ang dashboard mismo) para makatawag ang Payment frame og refresh method
-    payment.Payment payFrame = new payment.Payment(billID, amount, this); 
-    payFrame.setVisible(true);
 
 
     }//GEN-LAST:event_paymybillsActionPerformed
 
     private void viewpaidbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewpaidbillsActionPerformed
-        usersession session = usersession.getInstance();
-        int userId = session.getId();
+    loadBillsByStatus("Paid", 0); // Ang 0 placeholder lang kay 'name' man imong gigamit sa query
 
-        // Tawga ang imong load bills function gamit ang status nga 'Paid'
-        loadBillsByStatus("Paid", userId);
     }//GEN-LAST:event_viewpaidbillsActionPerformed
 
     private void viewpendingbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewpendingbillsActionPerformed
-        loadUserBills();
+     loadBillsByStatus("Pending", 0);
+
     }//GEN-LAST:event_viewpendingbillsActionPerformed
 
     private void viewstatementofaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewstatementofaccountActionPerformed
-        int selectedRow = mybillstable.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a bill to view statement.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    try {
+        // Imbis ang karaan nga tawag, siguroha nga husto ang class name
+        // Kung StatementOfAccount.java ang file name:
+        StatementOfAccount soa = new StatementOfAccount(); 
+        soa.setVisible(true);
+        this.dispose(); // O depende kung gusto nimo isira ang dashboard
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
+    }
 
-        String status = (String) mybillstable.getValueAt(selectedRow, 6);
-        if (!"Pending".equalsIgnoreCase(status)) {
-            JOptionPane.showMessageDialog(this, "Statement of Account is only available for pending bills.", "Invalid Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int billId = (int) mybillstable.getValueAt(selectedRow, 0);
-
-        // Open StatementOfAccount window and pass billId
-        Bills.StatementOfAccount statementWindow = new Bills.StatementOfAccount();
-        statementWindow.loadStatement(billId);
-        statementWindow.setVisible(true);
     }//GEN-LAST:event_viewstatementofaccountActionPerformed
 
     private void viewreceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewreceiptActionPerformed
-        int row = mybillstable.getSelectedRow();
+    int row = mybillstable.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a bill first!");
+        return;
+    }
 
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Palihug pagpili og bill sa table una.");
-        } else {
-            // Kuhaa ang Bill ID gikan sa unang column (column 0)
-            String billID = mybillstable.getValueAt(row, 0).toString();
+    // Kuhaon ang data gikan sa selected row
+    String id = mybillstable.getValueAt(row, 0).toString();
+    String amount = mybillstable.getValueAt(row, 1).toString();
+    String status = mybillstable.getValueAt(row, 2).toString();
 
-            // I-pasa ang ID ngadto sa BillReceipt (kinahanglan nimo i-update ang constructor sa BillReceipt.java)
-            BillReceipt receiptWindow = new BillReceipt(billID);
-            receiptWindow.setVisible(true);
-        }
+    // Ablihan ang BillReceipt frame
+    BillReceipt receipt = new BillReceipt();
+    receipt.setVisible(true);
+    
+    // I-pass ang data (Optional: depende kung giunsa nimo pag-design ang BillReceipt)
+    // receipt.displayReceipt(id, amount, status); 
+
     }//GEN-LAST:event_viewreceiptActionPerformed
 
     private void settingsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseExited
@@ -408,8 +403,10 @@ public class user_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_settingsbtnMouseEntered
 
     private void settingsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseClicked
-        new Settings().setVisible(true);
-        this.dispose();
+    Settings set = new Settings(this.name); // I-pasa ang name
+    set.setVisible(true);
+    this.dispose();
+
     }//GEN-LAST:event_settingsbtnMouseClicked
 
     private void profilebtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseExited
@@ -421,8 +418,15 @@ public class user_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_profilebtnMouseEntered
 
     private void profilebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseClicked
-        new Profile(this.name).setVisible(true);
+    if (this.name == null || this.name.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Session error: Username is missing!");
+    } else {
+        Profile prof = new Profile(this.name); // Siguroha nga 'this.name' kay String
+        prof.setVisible(true);
         this.dispose();
+    }
+
+
     }//GEN-LAST:event_profilebtnMouseClicked
 
     private void billsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseExited
@@ -434,9 +438,10 @@ public class user_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_billsbtnMouseEntered
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
-    Bills bp = new Bills(); // Ang page diin makita ang "Add" button
-    bp.setVisible(true);
+    UserBills ub = new UserBills(this.name); 
+    ub.setVisible(true);
     this.dispose();
+
     }//GEN-LAST:event_billsbtnMouseClicked
 
     private void homebtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homebtnMouseExited
@@ -505,39 +510,43 @@ public class user_dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel welcometxt;
     // End of variables declaration//GEN-END:variables
 
-
-    private void logAction(String user_logged_out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void setUserBillsTableModel(List<config.billsmodel> billsList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private void loadBillsByStatus(String status, int userId) {
     String[] columnNames = {"Bill ID", "Amount", "Status"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0);
     mybillstable.setModel(model);
 
     try {
+        // Siguroha nga ang path sa imong db husto
         con = DriverManager.getConnection("jdbc:sqlite:ebs.db");
-        // Siguroha nga 'status' ang column name sa imong SQLite database
-        String query = "SELECT bill_id, amount, status FROM bills WHERE status = ? AND username = ?";
+        
+        // Kini nga query mokuha sa bills depende sa status ('Pending' o 'Paid')
+        String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE b_status = ? AND username = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, status);
-        pst.setString(2, this.name);
+        pst.setString(2, this.name); // 'this.name' ang naggunit sa logged-in user
         
         ResultSet rs = pst.executeQuery();
         while(rs.next()) {
             model.addRow(new Object[]{
                 rs.getString("bill_id"), 
-                rs.getString("amount"), 
-                rs.getString("status")
+                rs.getString("b_amount"), 
+                rs.getString("b_status")
             });
         }
+        
+        // Close resources
+        rs.close();
+        pst.close();
+        con.close();
+        
     } catch (Exception e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error loading bills: " + e.getMessage());
     }
 
 }
+
+    private void logAction(String user_logged_out) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

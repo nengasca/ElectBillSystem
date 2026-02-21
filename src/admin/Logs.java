@@ -6,8 +6,13 @@
 package admin;
 
 import Bills.Bills;
+import config.config;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import main.login;
 import payment.Payment;
 
@@ -24,9 +29,9 @@ public class Logs extends javax.swing.JFrame {
      * Creates new form Logs
      */
     public Logs() {
-        initComponents();
-    }
-
+    initComponents();
+    displayLogs(); // <--- IMPORTANTE: Idugang ni diri
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -409,4 +414,29 @@ public class Logs extends javax.swing.JFrame {
     private void searchLogs(String searchText) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    // 1. Idugang kini nga method sa Logs class
+   public void displayLogs() {
+    DefaultTableModel model = (DefaultTableModel) logstable.getModel();
+    model.setRowCount(0);
+    try {
+        config conf = new config();
+        Connection conn = conf.connectDB();
+        String sql = "SELECT * FROM logs"; // Siguroha nga naa kay 'logs' table
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("log_id"),
+                rs.getString("log_date"),
+                rs.getString("log_action"),
+                rs.getString("u_username")
+            });
+        }
+        conn.close();
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
+    }
+}
+
 }

@@ -17,12 +17,13 @@ public class BillReceipt extends javax.swing.JFrame {
      * Creates new form BillReciept
      */
     public BillReceipt() {
-        initComponents();
-    }
+    initComponents(); // Siguroha nga naa ni para mugawas ang UI
+}
 
-    public BillReceipt(String billID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+// Mas maayo kung maghimo ka og constructor nga modawat og data para sa resibo
+public void displayReceipt(String billID, String amount, String status) {
+    
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

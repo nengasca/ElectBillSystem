@@ -5,6 +5,10 @@
  */
 package Bills;
 
+import config.config;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import main.login;
 
 /**
@@ -29,21 +33,204 @@ public class StatementOfAccount extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        customername = new javax.swing.JLabel();
+        address = new javax.swing.JLabel();
+        customeraccountnumber1 = new javax.swing.JLabel();
+        email = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        totalamountdue = new javax.swing.JLabel();
+        address2 = new javax.swing.JLabel();
+        closebtn = new javax.swing.JButton();
+        printreceipt1 = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(46, 134, 222));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Statement of Account");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 60));
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Electric Bill System");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 60));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, -1));
+
+        jLabel13.setBackground(new java.awt.Color(46, 134, 222));
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(46, 134, 222));
+        jLabel13.setText("Name:");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 150, 30));
+
+        jLabel8.setBackground(new java.awt.Color(46, 134, 222));
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(46, 134, 222));
+        jLabel8.setText("Address:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 150, 30));
+
+        jLabel9.setBackground(new java.awt.Color(46, 134, 222));
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(46, 134, 222));
+        jLabel9.setText("Account Number:");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 150, 30));
+
+        jLabel10.setBackground(new java.awt.Color(46, 134, 222));
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(46, 134, 222));
+        jLabel10.setText("Email:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 30));
+
+        customername.setBackground(new java.awt.Color(46, 134, 222));
+        customername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        customername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        customername.setText("Name:");
+        jPanel1.add(customername, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 80, 270, 30));
+
+        address.setBackground(new java.awt.Color(46, 134, 222));
+        address.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        address.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        address.setText("address");
+        jPanel1.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, 270, 30));
+
+        customeraccountnumber1.setBackground(new java.awt.Color(46, 134, 222));
+        customeraccountnumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        customeraccountnumber1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        customeraccountnumber1.setText("AccNumber");
+        jPanel1.add(customeraccountnumber1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 270, 30));
+
+        email.setBackground(new java.awt.Color(46, 134, 222));
+        email.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        email.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        email.setText("email");
+        jPanel1.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, 270, 30));
+
+        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 650, 230));
+
+        totalamountdue.setBackground(new java.awt.Color(46, 134, 222));
+        totalamountdue.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        totalamountdue.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        totalamountdue.setText("10,000.00");
+        jPanel1.add(totalamountdue, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 460, 80, 30));
+
+        address2.setBackground(new java.awt.Color(46, 134, 222));
+        address2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        address2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        address2.setText("Total Amount Due:");
+        jPanel1.add(address2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 460, 120, 30));
+
+        closebtn.setBackground(new java.awt.Color(46, 134, 222));
+        closebtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        closebtn.setText("Close");
+        closebtn.setBorder(null);
+        closebtn.setPreferredSize(new java.awt.Dimension(350, 40));
+        closebtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closebtnMouseClicked(evt);
+            }
+        });
+        closebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closebtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(closebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 520, 140, 20));
+
+        printreceipt1.setBackground(new java.awt.Color(46, 134, 222));
+        printreceipt1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        printreceipt1.setText("Print");
+        printreceipt1.setBorder(null);
+        printreceipt1.setPreferredSize(new java.awt.Dimension(350, 40));
+        printreceipt1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                printreceipt1MouseClicked(evt);
+            }
+        });
+        printreceipt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printreceipt1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(printreceipt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 520, 140, 20));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closebtnMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_closebtnMouseClicked
+
+    private void closebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closebtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_closebtnActionPerformed
+
+    private void printreceipt1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printreceipt1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printreceipt1MouseClicked
+
+    private void printreceipt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printreceipt1ActionPerformed
+    java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
+    job.setJobName("Print Statement of Account");
+
+    job.setPrintable(new java.awt.print.Printable() {
+        @Override
+        public int print(java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex) {
+            if (pageIndex > 0) {
+                return java.awt.print.Printable.NO_SUCH_PAGE;
+            }
+
+            java.awt.Graphics2D g2d = (java.awt.Graphics2D) graphics;
+            g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+            g2d.scale(0.8, 0.8);
+
+            // Siguroha nga 'jPanel1' ang variable name sa imong panel sa Design tab
+            jPanel1.printAll(graphics);
+
+            return java.awt.print.Printable.PAGE_EXISTS;
+        }
+    });
+
+    boolean doPrint = job.printDialog();
+    if (doPrint) {
+        try {
+            job.print();
+        } catch (java.awt.print.PrinterException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Printer Error: " + e.getMessage());
+        }
+    }
+    }//GEN-LAST:event_printreceipt1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -60,9 +247,45 @@ public class StatementOfAccount extends javax.swing.JFrame {
     }
 
     public void loadStatement(int billId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    try {
+        java.sql.Connection con = config.connectDB(); // Gamiton nato ang imong existing config
+        String sql = "SELECT * FROM bills WHERE bill_id = ?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        pst.setInt(1, billId);
+        java.sql.ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            customername.setText(rs.getString("username"));
+            // address.setText(rs.getString("b_address")); // depende sa imong columns
+            // email.setText(rs.getString("b_email"));
+        }
+        
+        rs.close();
+        pst.close();
+        con.close();
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
     }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel address;
+    private javax.swing.JLabel address2;
+    private javax.swing.JButton closebtn;
+    private javax.swing.JLabel customeraccountnumber1;
+    private javax.swing.JLabel customername;
+    private javax.swing.JLabel email;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton printreceipt1;
+    private javax.swing.JLabel totalamountdue;
     // End of variables declaration//GEN-END:variables
 }

@@ -407,8 +407,10 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_homebtnMouseExited
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
-        new UserBills().setVisible(true);
-        this.dispose();
+    UserBills ub = new UserBills(this.name); 
+    ub.setVisible(true);
+    this.dispose(); // I-close ang Profile frame
+
     }//GEN-LAST:event_billsbtnMouseClicked
 
     private void billsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseEntered
@@ -432,8 +434,14 @@ public class Profile extends javax.swing.JFrame {
     }//GEN-LAST:event_profilebtnMouseExited
 
     private void settingsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseClicked
-        new Settings().setVisible(true);
-        this.dispose();
+    Settings set = new Settings(this.name); 
+    
+    // 2. I-pakita ang Settings window
+    set.setVisible(true);
+    
+    // 3. I-close ang kasamtangan nga Profile window
+    this.dispose(); 
+
     }//GEN-LAST:event_settingsbtnMouseClicked
 
     private void settingsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseEntered

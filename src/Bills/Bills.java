@@ -27,17 +27,23 @@ import java.util.logging.Logger;
  *
  * @author Administrator
  */
+// Sa sulod sa Bills.java
 public class Bills extends javax.swing.JFrame {
-
+    config db = new config();
     private Color hoverColor;
     private Color defaultColor;
 
-    /**
-     * Creates new form bills
-     */
     public Bills() {
         initComponents();
+        displayData(); // <--- Siguroha nga naa ni diri para mo-load ang table inig abli
     }
+
+    public void displayData() {
+        // Query para makuha ang tanang bills
+        String query = "SELECT * FROM bills"; 
+        db.populateTable(query, billstable); // Gamita ang populateTable gikan sa imong config.java
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -259,6 +265,11 @@ public class Bills extends javax.swing.JFrame {
 
         searchfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         searchfield.setPreferredSize(new java.awt.Dimension(350, 40));
+        searchfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchfieldKeyReleased(evt);
+            }
+        });
         jPanel3.add(searchfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 250, 30));
 
         searchbtn.setBackground(new java.awt.Color(44, 62, 80));
@@ -426,25 +437,33 @@ try {
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void addbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbillsActionPerformed
-        new AddBills().setVisible(true);
+    AddBills ab = new AddBills();
+    ab.setVisible(true);
     }//GEN-LAST:event_addbillsActionPerformed
 
     private void editbillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editbillActionPerformed
-        int selectedRow = billstable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a bill to edit.");
-            return;
-        }
-        String status = billstable.getValueAt(selectedRow, 6).toString(); // Assuming status is in column 6
-        if (!"Pending".equalsIgnoreCase(status)) {
-            JOptionPane.showMessageDialog(this, "Only pending bills can be edited.");
-            return;
-        }
-        int billId = Integer.parseInt(billstable.getValueAt(selectedRow, 0).toString()); // Assuming bill ID is in column 0
-        EditBill editBillForm = new EditBill();
-        editBillForm.loadBill(billId);
-        editBillForm.setVisible(true);
+    int row = billstable.getSelectedRow();
+    if(row != -1) {
+        String id = billstable.getValueAt(row, 0).toString();
+        EditBill eb = new EditBill();
+        eb.loadBill(Integer.parseInt(id)); // I-load ang data sa bill sa fields
+        eb.setVisible(true);
+    } else {
+        JOptionPane.showMessageDialog(this, "Palihog pili og bill nga i-edit!");
+    }
+
     }//GEN-LAST:event_editbillActionPerformed
+
+    private void searchfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyReleased
+    String searchData = searchfield.getText();
+    
+    // I-filter ang bills base sa Account Number o Month
+    String query = "SELECT * FROM bills WHERE b_account_num LIKE '%" + searchData + "%' "
+                 + "OR b_month LIKE '%" + searchData + "%'";
+    
+    db.populateTable(query, billstable);
+
+    }//GEN-LAST:event_searchfieldKeyReleased
 
     /**
      * @param args the command line arguments
@@ -495,21 +514,24 @@ try {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void setBillsTableModel(List<billsmodel> billsList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public static class StatementOfAccount {
 
         public StatementOfAccount() {
-        }
-
-        public void loadStatement(int billId) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
         }
 
         public void setVisible(boolean b) {
+    StatementOfAccount soa = new StatementOfAccount();
+    soa.setVisible(true);
+}
+
+        public void loadStatement(int parseInt) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
-}
+
+   
+
+        }
+    
+

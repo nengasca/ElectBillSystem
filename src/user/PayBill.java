@@ -1,23 +1,36 @@
 
 package user;
 
+import config.config;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import main.login;
+import payment.Payment;
 
 /**
  *
  * @author Administrator
  */
 public class PayBill extends javax.swing.JFrame {
+    private String billId;
+  
+    private String amount;
+    private String currentUserName;
+    private String billID;
 
-    /**
-     * Creates new form PayBill
-     */
-    public PayBill(String billID, String amount) {
-    initComponents();
-    // I-set ang data sa imong mga TextFields
-    amountduefield.setText(amount);
-    // accountnumber.setText(...); // Pwede nimo i-set ang account number diri
-}
+    // 2. Usaba ang Constructor (kini ang naay error sa pikas file)
+    public PayBill(String id, String amount, String name) {
+        initComponents();
+        this.billId = id;
+        this.amount = amount;
+        this.currentUserName = name;
+        
+        // Opsyonal: I-display ang amount sa usa ka JLabel para makita sa user
+        // amttxt.setText(amount); 
+    }
+    
+    // ... ang ubang generated code ...
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,7 +42,7 @@ public class PayBill extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        change = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -38,13 +51,13 @@ public class PayBill extends javax.swing.JFrame {
         enteramountfield = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        amountduefield = new javax.swing.JTextField();
-        accountnumber = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        monthof1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        change = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        accountnumber = new javax.swing.JTextField();
+        amountduefield = new javax.swing.JTextField();
+        monthof1 = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
 
         jLabel1.setBackground(new java.awt.Color(0, 204, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -54,8 +67,8 @@ public class PayBill extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        change.setBackground(new java.awt.Color(0, 204, 204));
+        change.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 153));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -67,11 +80,11 @@ public class PayBill extends javax.swing.JFrame {
         jLabel2.setText("Pay Bill");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(61, 11, 367, 58));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 80));
+        change.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 80));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Amount Due");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, 170, -1));
+        change.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, 170, -1));
 
         methodcombobox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         methodcombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Payment Method", "Gcash", "Cash", "Bank" }));
@@ -81,7 +94,7 @@ public class PayBill extends javax.swing.JFrame {
                 methodcomboboxActionPerformed(evt);
             }
         });
-        jPanel1.add(methodcombobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, 170, 40));
+        change.add(methodcombobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, 170, 40));
 
         paybill.setBackground(new java.awt.Color(46, 134, 222));
         paybill.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -93,55 +106,37 @@ public class PayBill extends javax.swing.JFrame {
                 paybillActionPerformed(evt);
             }
         });
-        jPanel1.add(paybill, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 310, -1));
+        change.add(paybill, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 310, -1));
 
         enteramountfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         enteramountfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(enteramountfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 170, -1));
+        change.add(enteramountfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 170, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Account Number");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 110, -1));
+        change.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 110, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Payment Method");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 110, -1));
-
-        amountduefield.setToolTipText("");
-        amountduefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        amountduefield.setEnabled(false);
-        amountduefield.setName(""); // NOI18N
-        amountduefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(amountduefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 170, -1));
-
-        accountnumber.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        accountnumber.setEnabled(false);
-        accountnumber.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(accountnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 170, -1));
+        change.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 110, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Enter Amount");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 110, -1));
-
-        monthof1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        monthof1.setEnabled(false);
-        monthof1.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(monthof1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 170, -1));
+        change.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 110, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Month");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 110, -1));
-
-        change.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        change.setEnabled(false);
-        change.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, 170, -1));
+        change.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 110, -1));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Change");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 110, -1));
+        change.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 110, -1));
+        change.add(accountnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 170, 40));
+        change.add(amountduefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 170, 40));
+        change.add(monthof1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 170, 40));
+        change.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, 170, 40));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
+        getContentPane().add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -151,7 +146,35 @@ public class PayBill extends javax.swing.JFrame {
     }//GEN-LAST:event_methodcomboboxActionPerformed
 
     private void paybillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paybillActionPerformed
-        // TODO add your handling code here:
+    try {
+        // 1. Validation: Siguroha nga dili blanko ang fields
+        if (amountduefield.getText().isEmpty() || enteramountfield.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill out all required fields!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double amDue = Double.parseDouble(amountduefield.getText());
+        double cashReceived = Double.parseDouble(enteramountfield.getText());
+
+        // 2. Validation: Check kung kulang ang cash
+        if (cashReceived < amDue) {
+            JOptionPane.showMessageDialog(null, "Insufficient cash!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3. Kalkulasyon
+        double sukli = cashReceived - amDue;
+
+        // 4. I-FIX: Gamita ang jTextField1 tungod kay mao ni ang JTextField sa imong code
+        jTextField1.setText(String.valueOf(sukli)); 
+        
+        // 5. I-save sa database
+        savePaymentToDatabase(amDue, cashReceived, sukli);
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Please input a valid number!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_paybillActionPerformed
 
     public static void main(String args[]) {
@@ -167,7 +190,7 @@ public class PayBill extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accountnumber;
     private javax.swing.JTextField amountduefield;
-    private javax.swing.JTextField change;
+    private javax.swing.JPanel change;
     private javax.swing.JTextField enteramountfield;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -177,10 +200,38 @@ public class PayBill extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox<String> methodcombobox;
     private javax.swing.JTextField monthof1;
     private javax.swing.JButton paybill;
     // End of variables declaration//GEN-END:variables
-}
+
+    private void savePaymentToDatabase(double amount, double cash, double changeAmt) {
+    try {
+        config conf = new config();
+        // SQL para i-record ang payment
+        String sql = "INSERT INTO payments (bill_id, p_amount, p_cash, p_change, p_date) "
+                   + "VALUES ('" + billId + "', " + amount + ", " + cash + ", " + changeAmt + ", datetime('now'))";
+        
+        if (conf.insertData(sql) == 1) {
+            // I-update pud ang status sa bills ngadto sa 'Paid'
+            String updateBill = "UPDATE bills SET b_status = 'Paid' WHERE bill_id = '" + billId + "'";
+            conf.updateData(updateBill);
+            
+            JOptionPane.showMessageDialog(null, "Payment Successful! change: ₱" + changeAmt);
+            
+            // Ablihi ang Receipt
+            Payment payFrame = new Payment();
+            payFrame.setVisible(true);
+            this.dispose();
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
+    }
+   }
+
+    private void savePaymentToDatabase(double amDue, double cashReceived, JTextField change) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+  }

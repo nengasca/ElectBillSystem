@@ -5,6 +5,7 @@
  */
 package payment;
 
+import Bills.BillReceipt;
 import Bills.Bills;
 import admin.Logs;
 import admin.Setting;
@@ -36,27 +37,33 @@ public class Payment extends javax.swing.JFrame {
      */
     public Payment() {
     initComponents();
-    // I-initialize ang mga color
-    hoverColor = new Color(0, 102, 102); 
-    defaultColor = new Color(0, 153, 153);
-    displayData(); // Para mapuno ang table inig start
+    displayData(); // I-add ni diri!
+
 }
 
-    public Payment(String billID, String amount, user_dashboard aThis) {
-    initComponents(); // Importante ni para mugawas ang UI
-    
-    // I-initialize ang mga colors para dili mag error ang mouse hover
-    hoverColor = new Color(0, 102, 102);
-    defaultColor = new Color(0, 153, 153);
-    
-    // Pananglitan, gusto nimo i-display ang billID ug amount sa searchfield 
-    // o sa usa ka label para makita sa user unsa iyang bayran:
-    searchfield.setText(billID); 
-    
-    // Tawga ang displayData para mapuno ang table
-    displayData(); 
+private void processPayment(double amount, double cash, double change) {
+        config conf = new config();
+        String sql = "INSERT INTO payments (p_amount, p_cash, p_change, p_date) "
+                   + "VALUES ("+amount+", "+cash+", "+change+", datetime('now'))";
+        
+        if (conf.insertData(sql) == 1) {
+            JOptionPane.showMessageDialog(null, "Payment Successful!\nSukli: " + change);
+            
+            BillReceipt br = new BillReceipt();
+            br.setVisible(true);
+            this.dispose();
+        }
 }
 
+// Bag-ong method para i-setup ang table columns
+private void setupTableColumns() {
+    // I-define ang column names para sa payment table
+    String[] columnNames = {"Payment ID", "Bill ID", "Customer", "Amount", "Payment Date", "Status"};
+    
+    // Create table model na may column names
+    javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(columnNames, 0);
+    paymenttable.setModel(model);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,23 +77,23 @@ public class Payment extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         logoutbtn = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         userbtn = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         billsbtn = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         paymentbtn = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         settingsbtn = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         logsbtn = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         paymenttable = new javax.swing.JTable();
         welcometxt1 = new javax.swing.JLabel();
@@ -123,13 +130,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         logoutbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        logoutbtn.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Logout");
-        logoutbtn.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        logoutbtn.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        logoutbtn.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, -1, -1));
 
         jPanel1.add(logoutbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 200, 40));
 
@@ -147,13 +154,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         userbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        userbtn.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Users");
-        userbtn.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        userbtn.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        userbtn.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, -1, -1));
 
         jPanel1.add(userbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 200, 40));
 
@@ -171,13 +178,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         billsbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        billsbtn.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Bills");
-        billsbtn.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        billsbtn.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        billsbtn.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, -1, -1));
 
         jPanel1.add(billsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 200, 40));
 
@@ -195,13 +202,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         paymentbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        paymentbtn.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Payments");
-        paymentbtn.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        paymentbtn.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        paymentbtn.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
 
         jPanel1.add(paymentbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 200, 40));
 
@@ -219,13 +226,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         settingsbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        settingsbtn.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Settings");
         settingsbtn.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        settingsbtn.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jPanel1.add(settingsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 200, 40));
 
@@ -243,13 +250,13 @@ public class Payment extends javax.swing.JFrame {
             }
         });
         logsbtn.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        logsbtn.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Logs");
-        logsbtn.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
-        logsbtn.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        logsbtn.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
 
         jPanel1.add(logsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, 40));
 
@@ -270,7 +277,7 @@ public class Payment extends javax.swing.JFrame {
         welcometxt1.setBackground(new java.awt.Color(0, 0, 0));
         welcometxt1.setFont(new java.awt.Font("Lucida Calligraphy", 1, 24)); // NOI18N
         welcometxt1.setText(" Payment History");
-        jPanel3.add(welcometxt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 260, 50));
+        jPanel3.add(welcometxt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 260, 50));
 
         searchfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         searchfield.setPreferredSize(new java.awt.Dimension(350, 40));
@@ -319,12 +326,9 @@ public class Payment extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutbtnMouseExited
 
     private void userbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userbtnMouseClicked
-        try {
-            new admin_dashboard("Admin").setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(Payment.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.dispose();
+      loadUserBills();
+    
+   
     }//GEN-LAST:event_userbtnMouseClicked
 
     private void userbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userbtnMouseEntered
@@ -388,15 +392,25 @@ public class Payment extends javax.swing.JFrame {
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
     String searchTxt = searchfield.getText().trim();
+    
     try {
         config conf = new config();
-        // Query para pangitaon ang payment base sa ID o ngalan sa customer
-        String sql = "SELECT * FROM payments WHERE p_id LIKE '%"+searchTxt+"%' OR p_customer LIKE '%"+searchTxt+"%'";
-        ResultSet rs = conf.getData(sql);
-        paymenttable.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
+        String sql = "SELECT * FROM payments WHERE p_id LIKE '%" + searchTxt + "%' OR bill_id LIKE '%" + searchTxt + "%'";
+        
+        // Gamitin ang displayData method ng config para i-populate ang table
+        conf.displayData(sql, paymenttable);
+        
+        // Kung walang resulta, magpakita ng mensahe
+        if (paymenttable.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No payments found for: " + searchTxt);
+            displayData(); // I-refresh para makita lahat
+        }
+        
     } catch (Exception e) {
         System.out.println("Search Error: " + e.getMessage());
+        e.printStackTrace();
     }
+
 
 
     }//GEN-LAST:event_searchbtnActionPerformed
@@ -443,6 +457,27 @@ public class Payment extends javax.swing.JFrame {
     private void logAction(String action) {
     System.out.println("Activity: " + action);
 }
+
+    private void checkTableStructure() {
+    try {
+        config conf = new config();
+        Connection conn = conf.getConnection();
+        ResultSet rs = conn.getMetaData().getColumns(null, null, "payments", null);
+        
+        System.out.println("Columns in payments table:");
+        while (rs.next()) {
+            String columnName = rs.getString("COLUMN_NAME");
+            String columnType = rs.getString("TYPE_NAME");
+            System.out.println(" - " + columnName + " (" + columnType + ")");
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error checking table structure: " + ex.getMessage());
+    }
+    }
+
+    private void loadUserBills() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     private static class oldpassword {
 
         private static String getPassword() {
@@ -465,13 +500,16 @@ public class Payment extends javax.swing.JFrame {
         }
     }
 
-    public void displayData() {
+  public void displayData() {
     try {
         config conf = new config();
-        ResultSet rs = conf.getData("SELECT * FROM payments"); // Siguroa nga sakto ang table name sa imong DB
-        paymenttable.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
-    } catch (SQLException ex) {
-        System.out.println("Error: " + ex.getMessage());
-    }
+        // Siguroha nga 'payments' ang table name sa imong ebs.db
+        // Pwede nimo i-customize ang columns (p_id, p_amount, etc.) base sa imong db structure
+        String query = "SELECT * FROM payments"; 
+        conf.displayData(query, paymenttable); 
+    } catch (Exception ex) {
+        System.out.println("Error sa displayData: " + ex.getMessage());
     }
 }
+}
+

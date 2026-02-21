@@ -312,6 +312,11 @@ public class admin_dashboard extends javax.swing.JFrame {
                 searchfieldActionPerformed(evt);
             }
         });
+        searchfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchfieldKeyPressed(evt);
+            }
+        });
         jPanel3.add(searchfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 330, 30));
 
         searchbtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -475,17 +480,16 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_logsbtnMouseExited
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-   
-    String search = searchfield.getText().trim();
-    // Use a clean SQL string
-    String sql = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users WHERE "
-               + "u_fname LIKE '%" + search + "%' OR "
-               + "u_lname LIKE '%" + search + "%' OR "
-               + "u_username LIKE '%" + search + "%'";
+    String searchData = searchfield.getText(); // Kuhaa ang gi-type sa user
     
-    // Call the existing displayData method
-    db.displayData(sql, usertable);
-
+    // SQL query nga mangita sa First Name, Last Name, o Username nga naay 'searchData'
+    String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users "
+                 + "WHERE u_fname LIKE '%" + searchData + "%' "
+                 + "OR u_lname LIKE '%" + searchData + "%' "
+                 + "OR u_username LIKE '%" + searchData + "%'";
+    
+    // Gamita ang populateTable para i-refresh ang table sa search results
+    db.populateTable(query, usertable);
 
     }//GEN-LAST:event_searchbtnActionPerformed
 
@@ -592,10 +596,24 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
-        populateUserTable();
-    System.out.println("Table Refreshed!"); 
+    searchfield.setText(""); 
+    populateUserTable();    
 
     }//GEN-LAST:event_refreshActionPerformed
+
+    private void searchfieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyPressed
+    String searchData = searchfield.getText(); // Kuhaa ang gi-type samtang nag-type ang user
+    
+    // SQL query para sa automatic filtering
+    String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users "
+                 + "WHERE u_fname LIKE '%" + searchData + "%' "
+                 + "OR u_lname LIKE '%" + searchData + "%' "
+                 + "OR u_username LIKE '%" + searchData + "%'";
+    
+    // I-refresh ang table gamit ang populateTable sa imong config
+    db.populateTable(query, usertable);
+
+    }//GEN-LAST:event_searchfieldKeyPressed
 
     public static void main(String args[]) {
     java.awt.EventQueue.invokeLater(new Runnable() {

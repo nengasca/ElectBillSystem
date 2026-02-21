@@ -6,6 +6,7 @@
 package user;
 
 import config.billsmodel;
+import config.config;
 import config.config.usersession;
 import java.awt.Color;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import main.login;
 
 /**
@@ -20,21 +22,20 @@ import main.login;
  * @author Administrator
  */
 public class UserBills extends javax.swing.JFrame {
-    String name; 
+    String name;
     private Color hoverColor;
     private Color defaultColor;
+    private String loginName;
 
-    /**
-     * Creates new form UserBills
-     */
     public UserBills(String loginName) {
+    this.name = loginName; 
     initComponents();
-    this.name = loginName; // I-save ang name para magamit nato sa pagbalik
-
-    }
-
-    UserBills() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    displayBills(); // <--- Idugang kini nga tawag
+}
+    
+    // Tangtangon ni nimo kung dili nimo gamiton ang default constructor
+    public UserBills() {
+        initComponents();
     }
 
     /**
@@ -322,54 +323,54 @@ public class UserBills extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        // Search bills by keyword in all columns and display in billstable
-        String searchText = searchfield.getText().trim();
-        if (searchText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter search text.");
-            return;
+    String searchText = searchfield.getText().trim();
+    if (searchText.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter search text.");
+        return;
+    }
+    
+    try {
+        config conf = new config();
+        Connection con = conf.connectDB(); // Gamita ang imong existing config
+        
+        String query = "SELECT b.b_id, u.account_number, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
+                       "FROM tbl_bill b " +
+                       "JOIN users u ON b.user_id = u.id " +
+                       "WHERE CAST(b.b_id AS CHAR) LIKE ? OR " +
+                       "u.account_number LIKE ? OR " +
+                       "b.bill_month LIKE ? OR " +
+                       "b.status LIKE ?";
+        
+        PreparedStatement pst = con.prepareStatement(query);
+        String likeText = "%" + searchText + "%";
+        for (int i = 1; i <= 4; i++) { // Gi-adjust base sa query parameters
+            pst.setString(i, likeText);
         }
-        try {
-            String query = "SELECT b.b_id, u.account_number, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
-            "FROM tbl_bill b " +
-            "JOIN users u ON b.user_id = u.id " +
-            "WHERE CAST(b.b_id AS CHAR) LIKE ? OR " +
-            "u.account_number LIKE ? OR " +
-            "b.bill_month LIKE ? OR " +
-            "CAST(b.kwh_used AS CHAR) LIKE ? OR " +
-            "CAST(b.amount_due AS CHAR) LIKE ? OR " +
-            "CAST(b.due_date AS CHAR) LIKE ? OR " +
-            "b.status LIKE ?";
-           Connection con = db.getConnection();
-            PreparedStatement pst = con.prepareStatement(query);
-            String likeText = "%" + searchText + "%";
-            for (int i = 1; i <= 7; i++) {
-                pst.setString(i, likeText);
-            }
-            ResultSet rs = pst.executeQuery();
-            // Convert ResultSet to List<billsmodel>
-            java.util.List<config.billsmodel> billsList = new java.util.ArrayList<>();
-            while (rs.next()) {
-                config.billsmodel bill = new config.billsmodel(
-                    rs.getInt("b_id"),
-                    rs.getString("account_number"),
-                    rs.getString("bill_month"),
-                    rs.getInt("kwh_used"),
-                    rs.getDouble("amount_due"),
-                    rs.getDate("due_date"),
-                    rs.getString("status")
-                );
-                billsList.add(bill);
-            }
-            rs.close();
-            pst.close();
-            con.close();
+        
+        ResultSet rs = pst.executeQuery();
+        DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
+        model.setRowCount(0); // I-clear ang table sa dili pa sudlan
 
-            // Set table model from billsList
-            setUserBillsTableModel(billsList);
-
-        } catch (java.sql.SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error searching bills: " + e.getMessage());
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("b_id"),
+                rs.getString("account_number"),
+                rs.getString("bill_month"),
+                rs.getInt("kwh_used"),
+                rs.getDouble("amount_due"),
+                rs.getDate("due_date"),
+                rs.getString("status")
+            });
         }
+        
+        rs.close();
+        pst.close();
+        con.close();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error searching bills: " + e.getMessage());
+    }
+    
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void paymybillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymybillsActionPerformed
@@ -391,8 +392,9 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutbtnMouseExited
 
     private void homebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homebtnMouseClicked
-        new user_dashboard().setVisible(true);
-        this.dispose();
+     user_dashboard ud = new user_dashboard(this.name); 
+    ud.setVisible(true);
+    this.dispose(); 
     }//GEN-LAST:event_homebtnMouseClicked
 
     private void homebtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homebtnMouseEntered
@@ -404,8 +406,13 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_homebtnMouseExited
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
-      new Profile(this.name).setVisible(true); 
-    this.dispose();
+    if(this.name != null) {
+        UserBills ub = new UserBills(this.name); 
+        ub.setVisible(true);
+        this.dispose();
+    } else {
+        System.out.println("Error: Name is null!");
+    }
     }//GEN-LAST:event_billsbtnMouseClicked
 
     private void billsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseEntered
@@ -417,8 +424,11 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_billsbtnMouseExited
 
     private void profilebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseClicked
-        new Profile(this.name).setVisible(true); 
-    this.dispose();
+    Profile prof = new Profile(this.name); 
+    prof.setVisible(true);
+    
+    // I-close ang UserBills frame
+    this.dispose(); 
     }//GEN-LAST:event_profilebtnMouseClicked
 
     private void profilebtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseEntered
@@ -430,8 +440,11 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_profilebtnMouseExited
 
     private void settingsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseClicked
-        new Settings().setVisible(true);
-        this.dispose();
+    Settings set = new Settings(this.name); 
+    set.setVisible(true);
+    
+    // I-close ang UserBills frame
+    this.dispose(); 
     }//GEN-LAST:event_settingsbtnMouseClicked
 
     private void settingsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseEntered
@@ -443,45 +456,51 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_settingsbtnMouseExited
 
     private void viewpaidbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewpaidbillsActionPerformed
-        // TODO add your handling code here:
-        usersession session = usersession.getInstance();
-        int userId = session.getId();
+    DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
+    model.setRowCount(0); // I-clear ang table
 
-        String query = "SELECT b.b_id, u.account_number, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
-        "FROM tbl_bill b " +
-        "JOIN users u ON b.user_id = u.id " +
-        "WHERE b.user_id = ? AND b.status = 'Paid'";
+    try {
+        // 2. Gamita ang 'config' class nga sigurado nang naglihok
+        config conf = new config();
+        Connection con = conf.connectDB();
 
-        try (Connection con = db.getConnection();
-            PreparedStatement pst = con.prepareStatement(query)) {
+        // 3. Query base sa username (this.name) ug status nga 'Paid'
+        String query = "SELECT bill_id, u_accnum, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
+                       "FROM bills b " +
+                       "JOIN users u ON b.user_id = u.id " +
+                       "WHERE u.username = ? AND b.status = 'Paid'";
 
-            pst.setInt(1, userId);
-            ResultSet rs = pst.executeQuery();
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, this.name); // Gamiton nato ang 'name' variable sa klase
+        
+        ResultSet rs = pst.executeQuery();
 
-            java.util.List<config.billsmodel> billsList = new java.util.ArrayList<>();
-            while (rs.next()) {
-                config.billsmodel bill = new config.billsmodel(
-                    rs.getInt("b_id"),
-                    rs.getString("account_number"),
-                    rs.getString("bill_month"),
-                    rs.getInt("kwh_used"),
-                    rs.getDouble("amount_due"),
-                    rs.getDate("due_date"),
-                    rs.getString("status")
-                );
-                billsList.add(bill);
-            }
-            rs.close();
-
-            setUserBillsTableModel(billsList);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error loading paid bills: " + e.getMessage());
+        while (rs.next()) {
+            // 4. I-add direkta sa table model aron dili na magsalig sa 'setUserBillsTableModel'
+            model.addRow(new Object[]{
+                rs.getInt("b_id"),
+                rs.getString("account_number"),
+                rs.getString("bill_month"),
+                rs.getInt("kwh_used"),
+                rs.getDouble("amount_due"),
+                rs.getDate("due_date"),
+                rs.getString("status")
+            });
         }
+
+        // 5. Close resources
+        rs.close();
+        pst.close();
+        con.close();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading paid bills: " + e.getMessage());
+    }
+
     }//GEN-LAST:event_viewpaidbillsActionPerformed
 
     private void viewpendingbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewpendingbillsActionPerformed
-        loadUserBills();
+        displayBills();
     }//GEN-LAST:event_viewpendingbillsActionPerformed
 
     private void viewstatementofaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewstatementofaccountActionPerformed
@@ -571,9 +590,6 @@ public class UserBills extends javax.swing.JFrame {
     private javax.swing.JLabel welcometxt2;
     // End of variables declaration//GEN-END:variables
 
-    private void setUserBillsTableModel(List<billsmodel> billsList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private void logAction(String user_logged_out) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -583,6 +599,37 @@ public class UserBills extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void displayBills() {
+    DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
+    model.setRowCount(0); 
+
+    try {
+        config conf = new config();
+        Connection conn = conf.connectDB(); 
+        
+        // Siguroha nga 'u_username' o 'username' ang column name sa imong DB
+        String sql = "SELECT bill_id, b_amount, b_due_date, b_status FROM bills WHERE username = ?";
+        
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, this.name); // 'this.name' ang naggunit sa kinsa ang naka-login
+        
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("bill_id"),      
+                rs.getString("b_amount"),   
+                rs.getString("b_due_date"), 
+                rs.getString("b_status")    
+            });
+        }
+        rs.close();
+        pst.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
     private static class db {
 
         private static Connection getConnection() {
