@@ -78,7 +78,7 @@ public class Profile extends javax.swing.JFrame {
         settingsbtn = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -101,16 +101,17 @@ public class Profile extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel3.setBackground(new java.awt.Color(244, 246, 249));
+        jPanel3.setBackground(new java.awt.Color(0, 204, 204));
         jPanel3.setPreferredSize(new java.awt.Dimension(900, 600));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel1.setForeground(new java.awt.Color(0, 153, 153));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 100));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        logoutbtn.setBackground(new java.awt.Color(44, 62, 80));
-        logoutbtn.setForeground(new java.awt.Color(44, 62, 80));
+        logoutbtn.setBackground(new java.awt.Color(0, 153, 153));
+        logoutbtn.setForeground(new java.awt.Color(0, 153, 153));
         logoutbtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutbtnMouseClicked(evt);
@@ -133,8 +134,8 @@ public class Profile extends javax.swing.JFrame {
 
         jPanel1.add(logoutbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, 40));
 
-        homebtn.setBackground(new java.awt.Color(44, 62, 80));
-        homebtn.setForeground(new java.awt.Color(44, 62, 80));
+        homebtn.setBackground(new java.awt.Color(0, 153, 153));
+        homebtn.setForeground(new java.awt.Color(0, 153, 153));
         homebtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 homebtnMouseClicked(evt);
@@ -157,8 +158,8 @@ public class Profile extends javax.swing.JFrame {
 
         jPanel1.add(homebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 200, 40));
 
-        billsbtn.setBackground(new java.awt.Color(44, 62, 80));
-        billsbtn.setForeground(new java.awt.Color(44, 62, 80));
+        billsbtn.setBackground(new java.awt.Color(0, 153, 153));
+        billsbtn.setForeground(new java.awt.Color(0, 153, 153));
         billsbtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 billsbtnMouseClicked(evt);
@@ -181,8 +182,8 @@ public class Profile extends javax.swing.JFrame {
 
         jPanel1.add(billsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 200, 40));
 
-        profilebtn.setBackground(new java.awt.Color(44, 62, 80));
-        profilebtn.setForeground(new java.awt.Color(44, 62, 80));
+        profilebtn.setBackground(new java.awt.Color(0, 153, 153));
+        profilebtn.setForeground(new java.awt.Color(0, 153, 153));
         profilebtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 profilebtnMouseClicked(evt);
@@ -205,8 +206,8 @@ public class Profile extends javax.swing.JFrame {
 
         jPanel1.add(profilebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 200, 40));
 
-        settingsbtn.setBackground(new java.awt.Color(44, 62, 80));
-        settingsbtn.setForeground(new java.awt.Color(44, 62, 80));
+        settingsbtn.setBackground(new java.awt.Color(0, 153, 153));
+        settingsbtn.setForeground(new java.awt.Color(0, 153, 153));
         settingsbtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 settingsbtnMouseClicked(evt);
@@ -229,13 +230,10 @@ public class Profile extends javax.swing.JFrame {
 
         jPanel1.add(settingsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 200, 40));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("PowerPay");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 22, 220, 70));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/powerr (1).png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 110, 90));
 
-        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 420));
 
         jLabel9.setBackground(new java.awt.Color(0, 0, 0));
         jLabel9.setFont(new java.awt.Font("Lucida Calligraphy", 1, 36)); // NOI18N
@@ -271,8 +269,9 @@ public class Profile extends javax.swing.JFrame {
         firstnamefield.setPreferredSize(new java.awt.Dimension(350, 40));
         jPanel3.add(firstnamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 220, 30));
 
+        statuslabe.setBackground(new java.awt.Color(0, 0, 0));
         statuslabe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        statuslabe.setForeground(new java.awt.Color(0, 204, 0));
+        statuslabe.setForeground(new java.awt.Color(0, 102, 0));
         statuslabe.setText("Active");
         jPanel3.add(statuslabe, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 90, 60, -1));
 
@@ -377,6 +376,7 @@ public class Profile extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseClicked
@@ -521,6 +521,7 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JTextField firstnamefield;
     private javax.swing.JPanel homebtn;
     private javax.swing.JTextField idfield;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -529,7 +530,6 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;

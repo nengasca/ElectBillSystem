@@ -36,7 +36,6 @@ public class login extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         UserField = new javax.swing.JTextField();
         registerBtn = new javax.swing.JLabel();
@@ -45,18 +44,13 @@ public class login extends javax.swing.JFrame {
         PasswordField = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         bg.setBackground(new java.awt.Color(0, 204, 204));
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("  PowerPay");
-        bg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 310, 70));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Username");
@@ -106,15 +100,19 @@ public class login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Lucida Calligraphy", 1, 20)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Login to Your Account");
-        bg.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 80, 590, 60));
+        bg.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 390, 60));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel6.setText("Don't have an account?");
         bg.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, -1, -1));
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/powerr (1).png"))); // NOI18N
+        bg.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 110, 80));
+
         getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 440));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerBtnMouseClicked
@@ -199,10 +197,10 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPasswordField PasswordField;
     private javax.swing.JTextField UserField;
     private javax.swing.JPanel bg;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JButton loginbtn;
     private javax.swing.JLabel registerBtn;

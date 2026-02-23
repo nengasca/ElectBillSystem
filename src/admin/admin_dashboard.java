@@ -66,7 +66,6 @@ public class admin_dashboard extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         logoutbtn = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -85,6 +84,7 @@ public class admin_dashboard extends javax.swing.JFrame {
         logsbtn = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         usertable = new javax.swing.JTable();
         welcometxt = new javax.swing.JLabel();
@@ -109,12 +109,6 @@ public class admin_dashboard extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 100));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("PowerPay");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 180, 40));
 
         logoutbtn.setBackground(new java.awt.Color(0, 153, 153));
         logoutbtn.setForeground(new java.awt.Color(0, 153, 153));
@@ -275,7 +269,10 @@ public class admin_dashboard extends javax.swing.JFrame {
 
         jPanel1.add(logsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, 40));
 
-        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/powerr (1).png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 100, 100));
+
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 560));
 
         usertable.setAutoCreateColumnsFromModel(false);
         usertable.setModel(new javax.swing.table.DefaultTableModel(
@@ -393,7 +390,8 @@ public class admin_dashboard extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -1, 846, 570));
 
-        pack();
+        setSize(new java.awt.Dimension(856, 599));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseClicked
@@ -602,7 +600,7 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshActionPerformed
 
     private void searchfieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyPressed
-    String searchData = searchfield.getText(); // Kuhaa ang gi-type samtang nag-type ang user
+    String searchData = searchfield.getText(); 
     
     // SQL query para sa automatic filtering
     String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users "
@@ -610,7 +608,7 @@ public class admin_dashboard extends javax.swing.JFrame {
                  + "OR u_lname LIKE '%" + searchData + "%' "
                  + "OR u_username LIKE '%" + searchData + "%'";
     
-    // I-refresh ang table gamit ang populateTable sa imong config
+    
     db.populateTable(query, usertable);
 
     }//GEN-LAST:event_searchfieldKeyPressed
@@ -632,13 +630,13 @@ public class admin_dashboard extends javax.swing.JFrame {
     private javax.swing.JButton deleteuser;
     private javax.swing.JButton edituser;
     private javax.swing.JLabel fName;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -661,22 +659,21 @@ public class admin_dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel welcometxt1;
     // End of variables declaration//GEN-END:variables
 
-    // 1. Limpyo nga logAction (USA RA DAPAT NI)
+ 
     private void logAction(String action) {
         System.out.println("Log: " + action);
     }
 
    private void populateUserTable() {
-    // This query matches your ebs.db "users" table structure
+    
     String query = "SELECT u_id, u_fname, u_lname, u_username, u_role, u_status FROM users";
     
-    // Use the new method from config
+    
     db.populateTable(query, usertable);
     
     System.out.println("Table updated using manual Vector mapping (No rs2xml needed).");
 }
 
-    // Siguroa nga ang katapusan sa imong file kay ang Variables Declaration ra
-    // Ayaw na pagbutang og "private static class db" sa ubos
+   
 }
 

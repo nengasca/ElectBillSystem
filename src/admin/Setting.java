@@ -58,7 +58,6 @@ public class Setting extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         changepassbtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         logoutbtn = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -77,6 +76,7 @@ public class Setting extends javax.swing.JFrame {
         logsbtn = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         changerate = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
@@ -145,12 +145,6 @@ public class Setting extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 153, 153));
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 100));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("PowerPay");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 32, 220, 50));
 
         logoutbtn.setBackground(new java.awt.Color(0, 153, 153));
         logoutbtn.setForeground(new java.awt.Color(44, 62, 80));
@@ -296,7 +290,10 @@ public class Setting extends javax.swing.JFrame {
 
         jPanel1.add(logsbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 200, 40));
 
-        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/powerr (1).png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 100, 90));
+
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 460));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("Electric Rate per kWh");
@@ -330,6 +327,7 @@ public class Setting extends javax.swing.JFrame {
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 460));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void changepassbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassbtnMouseClicked
@@ -575,6 +573,7 @@ public class Setting extends javax.swing.JFrame {
     private javax.swing.JButton changerate;
     private javax.swing.JTextField changeratefield;
     private javax.swing.JPasswordField confirmpassfield;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -584,7 +583,6 @@ public class Setting extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
