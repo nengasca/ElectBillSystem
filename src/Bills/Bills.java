@@ -29,20 +29,25 @@ import java.util.logging.Logger;
  */
 // Sa sulod sa Bills.java
 public class Bills extends javax.swing.JFrame {
+    String name;
     config db = new config();
     private Color hoverColor;
     private Color defaultColor;
 
     public Bills() {
         initComponents();
-        displayData(); // <--- Siguroha nga naa ni diri para mo-load ang table inig abli
+        displayData(); 
+    }
+
+    private Bills(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void displayData() {
-        // Query para makuha ang tanang bills
-        String query = "SELECT * FROM bills"; 
-        db.populateTable(query, billstable); // Gamita ang populateTable gikan sa imong config.java
-    }
+    // I-filter ang query gamit ang 'username' (siguroha nga husto ang column name sa imong DB)
+    String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE username = '" + this.name + "'"; 
+    db.populateTable(query, billstable); 
+}
 
 
     /**
@@ -345,6 +350,9 @@ public class Bills extends javax.swing.JFrame {
     }//GEN-LAST:event_userbtnMouseExited
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
+    Bills b = new Bills(this.name); // I-pasa ang name sa user
+    b.setVisible(true);
+    this.dispose();
 
     }//GEN-LAST:event_billsbtnMouseClicked
 
@@ -449,7 +457,7 @@ try {
         eb.loadBill(Integer.parseInt(id)); // I-load ang data sa bill sa fields
         eb.setVisible(true);
     } else {
-        JOptionPane.showMessageDialog(this, "Palihog pili og bill nga i-edit!");
+        JOptionPane.showMessageDialog(this, "Please select bill to edit!");
     }
 
     }//GEN-LAST:event_editbillActionPerformed
@@ -458,7 +466,7 @@ try {
     String searchData = searchfield.getText();
     
     // I-filter ang bills base sa Account Number o Month
-    String query = "SELECT * FROM bills WHERE b_account_num LIKE '%" + searchData + "%' "
+    String query = "SELECT * FROM bills WHERE accnum LIKE '%" + searchData + "%' "
                  + "OR b_month LIKE '%" + searchData + "%'";
     
     db.populateTable(query, billstable);

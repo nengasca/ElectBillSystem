@@ -83,21 +83,22 @@ public class Profile extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         profile = new javax.swing.JLabel();
-        idfield = new javax.swing.JTextField();
-        firstnamefield = new javax.swing.JTextField();
         statuslabe = new javax.swing.JLabel();
-        lastnamefield = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        emailfield = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        accnumfield = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         removeProfile = new javax.swing.JButton();
         selectProfile = new javax.swing.JButton();
-        addressfield = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
+        id = new javax.swing.JTextField();
+        fname = new javax.swing.JTextField();
+        lname = new javax.swing.JTextField();
+        email = new javax.swing.JTextField();
+        address = new javax.swing.JTextField();
+        accnum = new javax.swing.JTextField();
+        updatebtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -233,7 +234,7 @@ public class Profile extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/powerr (1).png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 110, 90));
 
-        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 420));
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 450));
 
         jLabel9.setBackground(new java.awt.Color(0, 0, 0));
         jLabel9.setFont(new java.awt.Font("Lucida Calligraphy", 1, 36)); // NOI18N
@@ -255,19 +256,9 @@ public class Profile extends javax.swing.JFrame {
                 profileMouseClicked(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 7, 136, 116));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 7, 130, 116));
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 150, 130));
-
-        idfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        idfield.setEnabled(false);
-        idfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel3.add(idfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 220, 30));
-
-        firstnamefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        firstnamefield.setEnabled(false);
-        firstnamefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel3.add(firstnamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 220, 30));
 
         statuslabe.setBackground(new java.awt.Color(0, 0, 0));
         statuslabe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -275,24 +266,9 @@ public class Profile extends javax.swing.JFrame {
         statuslabe.setText("Active");
         jPanel3.add(statuslabe, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 90, 60, -1));
 
-        lastnamefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        lastnamefield.setEnabled(false);
-        lastnamefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        lastnamefield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastnamefieldActionPerformed(evt);
-            }
-        });
-        jPanel3.add(lastnamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 220, 30));
-
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel17.setText("Last Name");
         jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 330, 160, -1));
-
-        emailfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        emailfield.setEnabled(false);
-        emailfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel3.add(emailfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, 210, 30));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel18.setText("Email");
@@ -301,16 +277,6 @@ public class Profile extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel19.setText("Account Number");
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, 180, -1));
-
-        accnumfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        accnumfield.setEnabled(false);
-        accnumfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        accnumfield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accnumfieldActionPerformed(evt);
-            }
-        });
-        jPanel3.add(accnumfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, 210, 30));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel20.setText("First Name");
@@ -344,19 +310,35 @@ public class Profile extends javax.swing.JFrame {
         });
         jPanel3.add(selectProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 90, -1));
 
-        addressfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        addressfield.setEnabled(false);
-        addressfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        addressfield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addressfieldActionPerformed(evt);
-            }
-        });
-        jPanel3.add(addressfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 210, 30));
-
         jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel22.setText("Address");
         jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 160, -1));
+        jPanel3.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 160, 30));
+        jPanel3.add(fname, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 160, 30));
+
+        lname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lnameActionPerformed(evt);
+            }
+        });
+        jPanel3.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 160, 30));
+
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
+        jPanel3.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, 160, 30));
+        jPanel3.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 160, 30));
+        jPanel3.add(accnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, 160, 30));
+
+        updatebtn.setText("Update");
+        updatebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatebtnActionPerformed(evt);
+            }
+        });
+        jPanel3.add(updatebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -368,10 +350,10 @@ public class Profile extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGap(0, 448, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -456,10 +438,6 @@ public class Profile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_profileMouseClicked
 
-    private void accnumfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accnumfieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_accnumfieldActionPerformed
-
     private void removeProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeProfileActionPerformed
     profile.setIcon(null); 
     profile.setText("No Image"); // O butangan nimo og default icon
@@ -495,13 +473,68 @@ public class Profile extends javax.swing.JFrame {
 
     }//GEN-LAST:event_selectProfileActionPerformed
 
-    private void addressfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressfieldActionPerformed
+    private void lnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addressfieldActionPerformed
+    }//GEN-LAST:event_lnameActionPerformed
 
-    private void lastnamefieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastnamefieldActionPerformed
+    private void updatebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebtnActionPerformed
+    String fn = fname.getText();
+    String ln = lname.getText();
+    String em = email.getText();
+    String ad = address.getText();
+    String an = accnum.getText();
+
+    // 2. Kuhaon ang ID gikan sa session (importante kini para sa WHERE clause)
+    config.usersession session = config.usersession.getInstance();
+    int userId = session.getId();
+
+    // 3. I-validate kung naay empty fields
+    if(fn.isEmpty() || ln.isEmpty() || em.isEmpty()){
+        JOptionPane.showMessageDialog(this, "Palihog ayaw biyai nga walay sulod ang importante nga fields!");
+        return;
+    }
+
+    // 4. I-execute ang UPDATE query
+    try {
+        config conf = new config();
+        // Siguroha nga ang column names (u_fname, etc.) parehas sa imong database table
+        String sql = "UPDATE users SET u_fname = ?, u_lname = ?, u_email = ?, u_address = ?, u_accnum = ? WHERE u_id = ?";
+        
+        Connection conn = conf.connectDB();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        
+        pst.setString(1, fn);
+        pst.setString(2, ln);
+        pst.setString(3, em);
+        pst.setString(4, ad);
+        pst.setString(5, an);
+        pst.setInt(6, userId); // Mao ni ang basehan kinsa ang i-update
+
+        int rowsAffected = pst.executeUpdate();
+        
+        if(rowsAffected > 0){
+            // 5. I-update pud ang session data para refresh ang dashboard/profile
+            session.setFname(fn);
+            session.setLname(ln);
+            session.setEmail(em);
+            session.setAddress(ad);
+            session.setAccnum(an);
+            
+            JOptionPane.showMessageDialog(this, "Profile Updated Successfully!");
+        }
+        
+        pst.close();
+        conn.close();
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_updatebtnActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lastnamefieldActionPerformed
+    }//GEN-LAST:event_emailActionPerformed
 
     public static void main(String args[]) {
     java.awt.EventQueue.invokeLater(new Runnable() {
@@ -514,13 +547,13 @@ public class Profile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField accnumfield;
-    private javax.swing.JTextField addressfield;
+    private javax.swing.JTextField accnum;
+    private javax.swing.JTextField address;
     private javax.swing.JPanel billsbtn;
-    private javax.swing.JTextField emailfield;
-    private javax.swing.JTextField firstnamefield;
+    private javax.swing.JTextField email;
+    private javax.swing.JTextField fname;
     private javax.swing.JPanel homebtn;
-    private javax.swing.JTextField idfield;
+    private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -543,7 +576,7 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField lastnamefield;
+    private javax.swing.JTextField lname;
     private javax.swing.JPanel logoutbtn;
     private javax.swing.JLabel profile;
     private javax.swing.JPanel profilebtn;
@@ -551,6 +584,7 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JButton selectProfile;
     private javax.swing.JPanel settingsbtn;
     private javax.swing.JLabel statuslabe;
+    private javax.swing.JButton updatebtn;
     // End of variables declaration//GEN-END:variables
 
     private void logAction(String user_logged_out) {

@@ -37,8 +37,13 @@ public class config {
     }
 
     public static String getName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+   public String getFname() {
+    return u_fname; 
+}
+    private String u_fname;
 
     // Method used by admin_dashboard to retrieve result sets
     public java.sql.ResultSet getData(String query) throws java.sql.SQLException {
@@ -155,6 +160,26 @@ public class config {
 
         public void setPassword(String newPassHashed) {
             throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public void setFname(String fn) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public void setLname(String ln) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public void setEmail(String em) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public void setAddress(String ad) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public void setAccnum(String an) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
 

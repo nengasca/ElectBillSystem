@@ -199,38 +199,40 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_loginbtnMouseClicked
 
     private void registerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerbtnActionPerformed
-                                                                                          
-        String fname = firstnamefield.getText();
-        String lname = lastnamefield.getText();
-        String address = addressfield.getText();
-        String email = emailfield.getText();
-        String user = usernamefield1.getText();
-        String pass = new String(passwordfield.getPassword());
-        String role = rolecombobox.getSelectedItem().toString();
-        String accountNum = accnumber.getText();
-        
-        if(fname.isEmpty() || user.isEmpty() || pass.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Fields should not be empty!");
-            return;
-        }
-
-        config db = new config();
-        
-        // MAO NI ANG SAKTONG COLUMN NAMES BASE SA IMONG EBS.DB
-        String sql = "INSERT INTO users (u_fname, u_lname, u_email, u_username, u_password, u_role, u_address, u_accnum, u_status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        // Siguroa nga ang order sa values parehas sa SQL columns sa taas
-        db.addRecord(sql, fname, lname, email, user, pass, role, address, accountNum, "Pending");
-        
-        javax.swing.JOptionPane.showMessageDialog(this, "Registered Successfully! Wait for Admin Approval.");
-        
-        new login().setVisible(true);
-        this.dispose();
+    String fname = firstnamefield.getText();
+    String lname = lastnamefield.getText();
+    String address = addressfield.getText();
+    String email = emailfield.getText();
+    String user = usernamefield1.getText();
+    String pass = new String(passwordfield.getPassword());
+    String role = rolecombobox.getSelectedItem().toString();
+    String accountNum = accnumber.getText();
     
-                                         
-     
-          
+    // 1. Check kung naay empty fields
+    if(fname.isEmpty() || user.isEmpty() || pass.isEmpty() || email.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Fields should not be empty!");
+        return;
+    }
+
+    // 2. EMAIL VALIDATION CHECK
+    if (!isValidEmail(email)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Invalid Email Format! (ex: user@gmail.com)");
+        return; // Hunongon ang registration kung sayop ang email
+    }
+
+    config db = new config();
+    
+    // SQL INSERT...
+    String sql = "INSERT INTO users (u_fname, u_lname, u_email, u_username, u_password, u_role, u_address, u_accnum, u_status) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    db.addRecord(sql, fname, lname, email, user, pass, role, address, accountNum, "Pending");
+    
+    javax.swing.JOptionPane.showMessageDialog(this, "Registered Successfully! Wait for Admin Approval.");
+    
+    new login().setVisible(true);
+    this.dispose();
+
     }//GEN-LAST:event_registerbtnActionPerformed
 
     private void rolecomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolecomboboxActionPerformed
@@ -321,7 +323,11 @@ public class register extends javax.swing.JFrame {
         public secretanswer() {
         }
     }
-
+// Ibutang ni sa gawas sa bisan unsang actionPerfomed method
+    public boolean isValidEmail(String email) {
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    return email.matches(emailRegex);
+}
     private static class JOptionPane {
 
         public JOptionPane() {
