@@ -27,19 +27,20 @@ import user.user_dashboard;
  *
  * @author Administrator
  */
+// Sa sulod sa Payment.java (imong Receipt)
 public class Payment extends javax.swing.JFrame {
 
-    private Color hoverColor;
-    private Color defaultColor;
+    // Kini nga constructor ang dawaton gikan sa PayBill.java
+    public Payment(String fullName, String accNum, String billId, String amt, String cash, String change, String date) {
+        initComponents(); // AYAW KINI TANGTANGA
+        
+    }
 
-    /**
-     * Creates new form Payment
-     */
     public Payment() {
-    initComponents();
-    displayData(); // I-add ni diri!
+        initComponents();
+    }
 
-}
+
 
 private void processPayment(double amount, double cash, double change) {
         config conf = new config();
@@ -315,12 +316,10 @@ private void setupTableColumns() {
 
     private void logoutbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseEntered
 
-        logoutbtn.setBackground(hoverColor);
     }//GEN-LAST:event_logoutbtnMouseEntered
 
     private void logoutbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseExited
 
-        logoutbtn.setBackground(defaultColor);
     }//GEN-LAST:event_logoutbtnMouseExited
 
     private void userbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userbtnMouseClicked
@@ -330,11 +329,11 @@ private void setupTableColumns() {
     }//GEN-LAST:event_userbtnMouseClicked
 
     private void userbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userbtnMouseEntered
-        userbtn.setBackground(hoverColor);
+     
     }//GEN-LAST:event_userbtnMouseEntered
 
     private void userbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userbtnMouseExited
-        userbtn.setBackground(defaultColor);
+      
     }//GEN-LAST:event_userbtnMouseExited
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
@@ -343,11 +342,11 @@ private void setupTableColumns() {
     }//GEN-LAST:event_billsbtnMouseClicked
 
     private void billsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseEntered
-        billsbtn.setBackground(hoverColor);
+    
     }//GEN-LAST:event_billsbtnMouseEntered
 
     private void billsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseExited
-        billsbtn.setBackground(defaultColor);
+     
     }//GEN-LAST:event_billsbtnMouseExited
 
     private void paymentbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentbtnMouseClicked
@@ -355,11 +354,11 @@ private void setupTableColumns() {
     }//GEN-LAST:event_paymentbtnMouseClicked
 
     private void paymentbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentbtnMouseEntered
-        paymentbtn.setBackground(hoverColor);
+      
     }//GEN-LAST:event_paymentbtnMouseEntered
 
     private void paymentbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paymentbtnMouseExited
-        paymentbtn.setBackground(defaultColor);
+       
     }//GEN-LAST:event_paymentbtnMouseExited
 
     private void settingsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseClicked
@@ -368,11 +367,11 @@ private void setupTableColumns() {
     }//GEN-LAST:event_settingsbtnMouseClicked
 
     private void settingsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseEntered
-        settingsbtn.setBackground(hoverColor);
+ 
     }//GEN-LAST:event_settingsbtnMouseEntered
 
     private void settingsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsbtnMouseExited
-        settingsbtn.setBackground(defaultColor);
+   
     }//GEN-LAST:event_settingsbtnMouseExited
 
     private void logsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logsbtnMouseClicked
@@ -381,11 +380,11 @@ private void setupTableColumns() {
     }//GEN-LAST:event_logsbtnMouseClicked
 
     private void logsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logsbtnMouseEntered
-        logsbtn.setBackground(hoverColor);
+   
     }//GEN-LAST:event_logsbtnMouseEntered
 
     private void logsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logsbtnMouseExited
-        logsbtn.setBackground(defaultColor);
+    
     }//GEN-LAST:event_logsbtnMouseExited
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed

@@ -3,13 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/main/register.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/user/Settings.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/payment/Payment.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/user/Profile.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/user/UserBills.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/user/user_dashboard.java</file>
-            <file>file:/C:/Users/Administrator/Desktop/New%20folder/ElectBillSystem/src/user/PayBill.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/admin/Logs.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/user/UserBills.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/Bills/BillReceipt.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/Bills/Bills.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/payment/Payment.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/Bills/EditBill.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/main/register.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/main/login.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/user/Profile.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/Bills/StatementOfAccount.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/admin/admin_dashboard.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/main/landing.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/user/user_dashboard.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/user/PayBill.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/Bills/AddBills.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/admin/Edituser.java</file>
+            <file>file:/C:/Users/Administrator/Documents/sir,bus/GUI/ElectBillSystem/src/user/Settings.java</file>
         </group>
     </open-files>
 </project-private>

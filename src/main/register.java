@@ -44,8 +44,6 @@ public class register extends javax.swing.JFrame {
         addressfield = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         emailfield = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        rolecombobox = new javax.swing.JComboBox<>();
         usernamefield1 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         accnumber = new javax.swing.JTextField();
@@ -81,7 +79,7 @@ public class register extends javax.swing.JFrame {
                 loginbtnMouseClicked(evt);
             }
         });
-        bg.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 460, -1, -1));
+        bg.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 400, -1, -1));
 
         registerbtn.setBackground(new java.awt.Color(46, 134, 222));
         registerbtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -98,7 +96,7 @@ public class register extends javax.swing.JFrame {
                 registerbtnActionPerformed(evt);
             }
         });
-        bg.add(registerbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, -1, -1));
+        bg.add(registerbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, 290, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Password");
@@ -106,7 +104,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setText("Already have an account?");
-        bg.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, -1, -1));
+        bg.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, -1, -1));
 
         passwordfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         passwordfield.setPreferredSize(new java.awt.Dimension(350, 40));
@@ -142,20 +140,6 @@ public class register extends javax.swing.JFrame {
         });
         bg.add(emailfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 260, -1));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Type");
-        bg.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 250, -1, 20));
-
-        rolecombobox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        rolecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Role", "User", "Admin", " " }));
-        rolecombobox.setPreferredSize(new java.awt.Dimension(350, 40));
-        rolecombobox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rolecomboboxActionPerformed(evt);
-            }
-        });
-        bg.add(rolecombobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 260, 40));
-
         usernamefield1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         usernamefield1.setPreferredSize(new java.awt.Dimension(350, 40));
         usernamefield1.addActionListener(new java.awt.event.ActionListener() {
@@ -177,7 +161,7 @@ public class register extends javax.swing.JFrame {
                 accnumberActionPerformed(evt);
             }
         });
-        bg.add(accnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 270, -1));
+        bg.add(accnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 260, -1));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel10.setText("Email");
@@ -185,7 +169,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel11.setText("Customer Account Number");
-        bg.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, -1, -1));
+        bg.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, -1, -1));
 
         getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 520));
 
@@ -205,39 +189,39 @@ public class register extends javax.swing.JFrame {
     String email = emailfield.getText();
     String user = usernamefield1.getText();
     String pass = new String(passwordfield.getPassword());
-    String role = rolecombobox.getSelectedItem().toString();
     String accountNum = accnumber.getText();
     
-    // 1. Check kung naay empty fields
     if(fname.isEmpty() || user.isEmpty() || pass.isEmpty() || email.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Fields should not be empty!");
         return;
     }
 
-    // 2. EMAIL VALIDATION CHECK
     if (!isValidEmail(email)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Invalid Email Format! (ex: user@gmail.com)");
-        return; // Hunongon ang registration kung sayop ang email
+        javax.swing.JOptionPane.showMessageDialog(this, "Invalid Email Format!");
+        return; 
     }
 
-    config db = new config();
+       config db = new config();
+         String main = usernamefield1.getText();
+// 1. I-insert ang User
+        String sqlUser = "INSERT INTO users (u_fname, u_lname, u_email, u_role, u_username, u_password, u_address, u_accnum, u_status) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+       db.addRecord(sqlUser, fname, lname, email, "User", user, pass, address, accountNum, "Pending");
+       
+       java.util.Random rand = new java.util.Random();
+       double randomBill = 100 + (1500 - 100) * rand.nextDouble();
+
+      String formattedBill = String.format("%.2f", randomBill);
+
+     String sqlBill = "INSERT INTO bills (username, b_amount, b_status) VALUES (?, ?, ?)";
+     db.addRecord(sqlBill, user, formattedBill, "Pending");
+
+     javax.swing.JOptionPane.showMessageDialog(this, "Registered Successfully! Your initial bill is P" + formattedBill);
     
-    // SQL INSERT...
-    String sql = "INSERT INTO users (u_fname, u_lname, u_email, u_username, u_password, u_role, u_address, u_accnum, u_status) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    db.addRecord(sql, fname, lname, email, user, pass, role, address, accountNum, "Pending");
-    
-    javax.swing.JOptionPane.showMessageDialog(this, "Registered Successfully! Wait for Admin Approval.");
-    
-    new login().setVisible(true);
+     new login().setVisible(true);
     this.dispose();
 
     }//GEN-LAST:event_registerbtnActionPerformed
-
-    private void rolecomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolecomboboxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rolecomboboxActionPerformed
 
     private void accnumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accnumberActionPerformed
         // TODO add your handling code here:
@@ -308,13 +292,11 @@ public class register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField lastnamefield;
     private javax.swing.JLabel loginbtn;
     private javax.swing.JPasswordField passwordfield;
     private javax.swing.JButton registerbtn;
-    private javax.swing.JComboBox<String> rolecombobox;
     private javax.swing.JTextField usernamefield1;
     // End of variables declaration//GEN-END:variables
 

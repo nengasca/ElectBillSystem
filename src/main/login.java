@@ -122,35 +122,46 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_registerBtnMouseClicked
 
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
-                                     
-        String username = UserField.getText();
-        String password = new String(PasswordField.getPassword());
+     String username = UserField.getText();
+     String password = new String(PasswordField.getPassword());
 
-        try {
-            config db = new config();
-            String query = "SELECT * FROM users WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
-            ResultSet rs = db.getData(query);
+try {
+    config db = new config();
+    // Pagkuha sa tanang data base sa username ug password
+    String query = "SELECT * FROM users WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
+    ResultSet rs = db.getData(query);
 
-            if (rs.next()) {
-                String role = rs.getString("u_role");
-                String name = rs.getString("u_fname");
-                
-                JOptionPane.showMessageDialog(null, "Login Successful!");
-                
-                if (role.equalsIgnoreCase("Admin")) {
-                    new admin_dashboard(name).setVisible(true);
-                } else {
-                    new user_dashboard(name).setVisible(true);
-                }
-                this.dispose();
+    if (rs.next()) {
+        String status = rs.getString("u_status");
+        String role = rs.getString("u_role"); // Siguruha nga "u_role" ang column sa DB
+        String name = rs.getString("u_fname"); 
+        
+        // Validation para sa account status
+        if (!status.equalsIgnoreCase("Active")) {
+            JOptionPane.showMessageDialog(null, "Your account is still " + status + ". Please wait for Admin Approval.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Login Successful!");
+            
+            // Redirection base sa Role gikan sa Database
+            if (role.equalsIgnoreCase("Admin")) {
+                // Mo-abli sa Admin Dashboard ug i-pasa ang pangalan
+                new admin.admin_dashboard(name).setVisible(true);
+            } else if (role.equalsIgnoreCase("User")) {
+                // Mo-abli sa User Dashboard ug i-pasa ang pangalan
+                new user.user_dashboard(name).setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+                JOptionPane.showMessageDialog(null, "No role assigned to this account.");
+                return;
             }
-            rs.close(); // IMPORTANT: Close to prevent locking
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            this.dispose(); // I-close ang Login window
         }
-    
+    } else {
+        JOptionPane.showMessageDialog(null, "Invalid Username or Password!");
+    }
+    rs.close(); 
+} catch (Exception e) {
+    System.out.println("Error: " + e.getMessage());
+}
 
     }//GEN-LAST:event_loginbtnActionPerformed
 

@@ -13,12 +13,25 @@ import main.login;
  */
 public class BillReceipt extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BillReciept
-     */
+    // KINI NGA CONSTRUCTOR DAPAT MAGTUGMA SA PAG-TAWAG NIMO SA PAYBILL.JAVA
+    public BillReceipt(String fullName, String accNum, String billId, String amt, String cash, String change, String date) {
+        initComponents(); // AYAW KINI TANGTANGA (importante ni para mo-load ang UI)
+        
+        // I-set ang labels
+        customername.setText(fullName);
+        customeraccountnumber.setText(accNum);
+        billid.setText(billId);
+        paymentid.setText(amt);
+        paymentdate.setText(cash);
+        paymentmethod.setText(change);
+        amtpaid.setText(date);
+    }
+    
+    // Default constructor (optional pero maayo naay ingon ani)
     public BillReceipt() {
-    initComponents(); // Siguroha nga naa ni para mugawas ang UI
-}
+        initComponents();
+    }
+
 
 // Mas maayo kung maghimo ka og constructor nga modawat og data para sa resibo
 public void displayReceipt(String billID, String amount, String status) {
@@ -230,6 +243,7 @@ public void displayReceipt(String billID, String amount, String status) {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void printreceiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printreceiptMouseClicked

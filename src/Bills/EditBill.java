@@ -143,6 +143,7 @@ public class EditBill extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void monthcomboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthcomboboxActionPerformed

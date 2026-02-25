@@ -521,20 +521,21 @@ public class admin_dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_adduserActionPerformed
 
     private void edituserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edituserActionPerformed
-                                           
     int selectedRow = usertable.getSelectedRow();
     
     if (selectedRow == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select user table.");
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a user from the table.");
         return;
     }
     
-    // Kuhaon ang ID sa selected user (Column 0)
+    // 1. Kuhaon ang ID sa selected user gikan sa Column 0 (u_id)
     int userId = Integer.parseInt(usertable.getValueAt(selectedRow, 0).toString()); 
     
-    // Ablihan ang Edituser form ug i-load ang data
+    // 2. Ablihan ang Edituser form
     Edituser editForm = new Edituser();
-    editForm.loadUser(userId); // Siguroa nga na-fix na nimo ang loadUser sa Edituser.java
+    
+    // 3. I-load ang data sa user ngadto sa fields sa Edit Form
+    editForm.loadUser(userId); 
     editForm.setVisible(true);
 
     }//GEN-LAST:event_edituserActionPerformed

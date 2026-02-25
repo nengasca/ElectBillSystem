@@ -2,6 +2,9 @@
 package user;
 
 import config.config;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import main.login;
@@ -12,22 +15,30 @@ import payment.Payment;
  * @author Administrator
  */
 public class PayBill extends javax.swing.JFrame {
-    private String billId;
-  
-    private String amount;
-    private String currentUserName;
-    private String billID;
+    
+    // Paghimo og variables nga naggunit sa data
+    String billID;
+    String billAmount;
 
-    // 2. Usaba ang Constructor (kini ang naay error sa pikas file)
-    public PayBill(String id, String amount, String name) {
+    // Mao kini ang kinahanglan nimo nga constructor
+    public PayBill(String bid, String amt) {
         initComponents();
-        this.billId = id;
-        this.amount = amount;
-        this.currentUserName = name;
-        
-        // Opsyonal: I-display ang amount sa usa ka JLabel para makita sa user
-        // amttxt.setText(amount); 
+        this.billID = bid;
+        this.billAmount = amt;
+       
+    
+        amountduefield.setText(billAmount);
     }
+
+    // Siguroha nga naa gihapon ang default constructor para dili mo-error ang ubang parts
+    public PayBill() {
+        initComponents();
+    }
+
+    PayBill(String id, String amount, String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     // ... ang ubang generated code ...
 
@@ -211,28 +222,46 @@ public class PayBill extends javax.swing.JFrame {
     private void savePaymentToDatabase(double amount, double cash, double changeAmt) {
     try {
         config conf = new config();
-        // SQL para i-record ang payment
-        String sql = "INSERT INTO payments (bill_id, p_amount, p_cash, p_change, p_date) "
-                   + "VALUES ('" + billId + "', " + amount + ", " + cash + ", " + changeAmt + ", datetime('now'))";
-        
-        if (conf.insertData(sql) == 1) {
-            // I-update pud ang status sa bills ngadto sa 'Paid'
-            String updateBill = "UPDATE bills SET b_status = 'Paid' WHERE bill_id = '" + billId + "'";
-            conf.updateData(updateBill);
-            
-            JOptionPane.showMessageDialog(null, "Payment Successful! change: ₱" + changeAmt);
-            
-            // Ablihi ang Receipt
-            Payment payFrame = new Payment();
-            payFrame.setVisible(true);
+        Connection conn = conf.connectDB();
+
+        // 1. Record the Payment
+        String sql = "INSERT INTO payments (bill_id, p_amount, p_cash, p_change, p_date) VALUES (?, ?, ?, ?, datetime('now'))";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, this.billID);
+        pst.setDouble(2, amount);
+        pst.setDouble(3, cash);
+        pst.setDouble(4, changeAmt);
+        pst.executeUpdate();
+
+        // 2. Update Bill Status
+        String updateBill = "UPDATE bills SET b_status = 'Paid' WHERE bill_id = ?";
+        PreparedStatement pstUpdate = conn.prepareStatement(updateBill);
+        pstUpdate.setString(1, this.billID);
+        pstUpdate.executeUpdate();
+
+        // 3. KUHAON NATO ANG DETALYE SA USER PARA SA RESIBO
+        // Gamiton nato ang username sa pag-search sa users table
+        String userSql = "SELECT u_fname, u_lname, u_accnum FROM users WHERE u_username = (SELECT username FROM bills WHERE bill_id = ?)";
+        PreparedStatement pstUser = conn.prepareStatement(userSql);
+        pstUser.setString(1, this.billID);
+        ResultSet rs = pstUser.executeQuery();
+
+        if (rs.next()) {
+            String fullname = rs.getString("u_fname") + " " + rs.getString("u_lname");
+            String accNum = rs.getString("u_accnum");
+            String dateToday = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+
+            JOptionPane.showMessageDialog(null, "Payment Successful!");
+
+            // 4. ABREHAN ANG RESIBO NGA NAAY KOMPLETO NGA DATA
+            Payment receipt = new Payment(fullname, accNum, this.billID, String.valueOf(amount), String.valueOf(cash), String.valueOf(changeAmt), dateToday);
+            receipt.setVisible(true);
             this.dispose();
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
-    }
-   }
 
-    private void savePaymentToDatabase(double amDue, double cashReceived, JTextField change) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        conn.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
-  }
+    }
+}

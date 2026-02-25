@@ -5,6 +5,9 @@
  */
 package admin;
 
+import config.config;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import main.login;
 
@@ -13,16 +16,13 @@ import main.login;
  * @author Administrator
  */
 public class Edituser extends javax.swing.JFrame {
+    
+    // I-declare ang userId dire para ma-access sa tibuok frame
+    public int userId; 
 
-    private int userId;
-
-    /**
-     * Creates new form Edituser
-     */
     public Edituser() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,19 +35,15 @@ public class Edituser extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        firstnamefield = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         rolecombobox = new javax.swing.JComboBox<>();
-        lastnamefield = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         emailfield = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         updateUser = new javax.swing.JButton();
-        passwordfield = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
-        usernamefield = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        userField = new javax.swing.JTextField();
+        password = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -67,17 +63,9 @@ public class Edituser extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 80));
 
-        firstnamefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        firstnamefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(firstnamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 210, 30));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("First Name");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 70, -1));
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Role");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, -1, -1));
 
         rolecombobox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rolecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Role", "User", "Admin", " " }));
@@ -87,23 +75,15 @@ public class Edituser extends javax.swing.JFrame {
                 rolecomboboxActionPerformed(evt);
             }
         });
-        jPanel1.add(rolecombobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 30));
-
-        lastnamefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        lastnamefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(lastnamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 190, 30));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Last Name");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, -1));
+        jPanel1.add(rolecombobox, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, 190, 30));
 
         emailfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         emailfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(emailfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 210, 30));
+        jPanel1.add(emailfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 210, 30));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Email");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         updateUser.setBackground(new java.awt.Color(46, 134, 222));
         updateUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -115,27 +95,19 @@ public class Edituser extends javax.swing.JFrame {
                 updateUserActionPerformed(evt);
             }
         });
-        jPanel1.add(updateUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 170, 40));
-
-        passwordfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        passwordfield.setEnabled(false);
-        passwordfield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(passwordfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, 190, 30));
+        jPanel1.add(updateUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 240, 170, 40));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Password");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 180, -1, -1));
-
-        usernamefield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        usernamefield.setEnabled(false);
-        usernamefield.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel1.add(usernamefield, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 210, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Username");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 70, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 70, -1));
+        jPanel1.add(userField, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 210, 30));
+        jPanel1.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 190, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 370));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 300));
 
         pack();
         setLocationRelativeTo(null);
@@ -143,13 +115,11 @@ public class Edituser extends javax.swing.JFrame {
 
     private void updateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserActionPerformed
         // Get updated user input
-        String firstName = firstnamefield.getText().trim();
-        String lastName = lastnamefield.getText().trim();
         String email = emailfield.getText().trim();
         String role = (String) rolecombobox.getSelectedItem();
 
         // Basic validation
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || role.equals("Select Role")) {
+        if ( email.isEmpty() || role.equals("Select Role")) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields and select a role.");
             return;
         }
@@ -164,12 +134,10 @@ public class Edituser extends javax.swing.JFrame {
             // Assume userId is available from the selected user to edit
 
             // Update user in the database (excluding username and password)
-            String query = "UPDATE users SET firstname = ?, lastname = ?, email = ?, role = ? WHERE id = ?";
+            String query = "UPDATE users SET u_fname = ?, u_lname = ?, u_email = ?, u_role = ? WHERE u_id = ?";
            // Ilisdi ang error nga line niini:
-            java.sql.Connection conn = config.config.connectDB();
+            java.sql.Connection conn = config.connectDB();
             java.sql.PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, firstName);
-            pst.setString(2, lastName);
             pst.setString(3, email);
             pst.setString(4, role);
             pst.setInt(5, userId);
@@ -203,24 +171,31 @@ public class Edituser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailfield;
-    private javax.swing.JTextField firstnamefield;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField lastnamefield;
-    private javax.swing.JPasswordField passwordfield;
+    private javax.swing.JTextField password;
     private javax.swing.JComboBox<String> rolecombobox;
     private javax.swing.JButton updateUser;
-    private javax.swing.JTextField usernamefield;
+    private javax.swing.JTextField userField;
     // End of variables declaration//GEN-END:variables
 
-    void loadUser(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void loadUser(int id) {
+    config db = new config();
+    try {
+        ResultSet rs = db.getData("SELECT * FROM users WHERE u_id = " + id);
+        if (rs.next()) {
+            // I-set ang text sa imong mga fields (usba ang names base sa imong UI)
+            emailfield.setText(rs.getString("u_email"));
+            userField.setText(rs.getString("u_username"));
+            rolecombobox.setSelectedItem(rs.getString("u_role"));
+        }
+    } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
     }
+}
 }

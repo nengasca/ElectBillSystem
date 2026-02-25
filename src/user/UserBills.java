@@ -5,6 +5,7 @@
  */
 package user;
 
+import Bills.BillReceipt;
 import config.billsmodel;
 import config.config;
 import config.config.usersession;
@@ -87,12 +88,12 @@ public class UserBills extends javax.swing.JFrame {
 
             },
             new String [] {
-
+                "ID", "Amount", "Due Date", "Status"
             }
         ));
         jScrollPane1.setViewportView(mybillstable);
 
-        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 150, 450, 250));
+        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 150, 450, 240));
 
         searchfield.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
         searchfield.setPreferredSize(new java.awt.Dimension(350, 40));
@@ -270,7 +271,7 @@ public class UserBills extends javax.swing.JFrame {
                 viewpaidbillsActionPerformed(evt);
             }
         });
-        jPanel5.add(viewpaidbills, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 90, 30));
+        jPanel5.add(viewpaidbills, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 90, 30));
 
         viewpendingbills.setBackground(new java.awt.Color(255, 255, 255));
         viewpendingbills.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -281,7 +282,7 @@ public class UserBills extends javax.swing.JFrame {
                 viewpendingbillsActionPerformed(evt);
             }
         });
-        jPanel5.add(viewpendingbills, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 90, 30));
+        jPanel5.add(viewpendingbills, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 90, 30));
 
         viewstatementofaccount.setBackground(new java.awt.Color(255, 255, 255));
         viewstatementofaccount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -292,7 +293,7 @@ public class UserBills extends javax.swing.JFrame {
                 viewstatementofaccountActionPerformed(evt);
             }
         });
-        jPanel5.add(viewstatementofaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 90, 30));
+        jPanel5.add(viewstatementofaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 90, 30));
 
         viewreceipt.setBackground(new java.awt.Color(255, 255, 255));
         viewreceipt.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -303,7 +304,7 @@ public class UserBills extends javax.swing.JFrame {
                 viewreceiptActionPerformed(evt);
             }
         });
-        jPanel5.add(viewreceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 190, 90, 30));
+        jPanel5.add(viewreceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -321,58 +322,63 @@ public class UserBills extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-    String searchText = searchfield.getText().trim();
-    if (searchText.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter search text.");
-        return;
-    }
+    String searchTxt = searchfield.getText().trim();
+    DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
     
-    try {
-        config conf = new config();
-        Connection con = conf.connectDB(); // Gamita ang imong existing config
-        
-        String query = "SELECT b.b_id, u.account_number, b.bill_month, b.kwh_used, b.amount_due, b.due_date, b.status " +
-                       "FROM tbl_bill b " +
-                       "JOIN users u ON b.user_id = u.id " +
-                       "WHERE CAST(b.b_id AS CHAR) LIKE ? OR " +
-                       "u.account_number LIKE ? OR " +
-                       "b.bill_month LIKE ? OR " +
-                       "b.status LIKE ?";
-        
-        PreparedStatement pst = con.prepareStatement(query);
-        String likeText = "%" + searchText + "%";
-        for (int i = 1; i <= 4; i++) { // Gi-adjust base sa query parameters
-            pst.setString(i, likeText);
+    if (searchTxt.isEmpty()) {
+        displayBills(); // Kung walay gi-type, ipakita tanan
+    } else {
+        model.setRowCount(0);
+        try {
+            config conf = new config();
+            Connection conn = conf.connectDB();
+            
+            // Mo-search sa Bill ID o Status para sa maong user lang
+            String sql = "SELECT bill_id, b_amount, due_date, b_status FROM bills "
+                       + "WHERE username = ? AND (bill_id LIKE ? OR b_status LIKE ?)";
+            
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, this.name);
+            pst.setString(2, "%" + searchTxt + "%");
+            pst.setString(3, "%" + searchTxt + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("bill_id"),      
+                    rs.getString("b_amount"),   
+                    rs.getString("due_date"), 
+                    rs.getString("b_status")    
+                });
+            }
+            conn.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Search Error: " + e.getMessage());
         }
-        
-        ResultSet rs = pst.executeQuery();
-        DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
-        model.setRowCount(0); // I-clear ang table sa dili pa sudlan
-
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getInt("b_id"),
-                rs.getString("account_number"),
-                rs.getString("bill_month"),
-                rs.getInt("kwh_used"),
-                rs.getDouble("amount_due"),
-                rs.getDate("due_date"),
-                rs.getString("status")
-            });
-        }
-        
-        rs.close();
-        pst.close();
-        con.close();
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error searching bills: " + e.getMessage());
     }
-    
+
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void paymybillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymybillsActionPerformed
-        // TODO add your handling code here:
+    int row = mybillstable.getSelectedRow(); 
+    
+    // 2. I-check kung naay gi-select ang user
+    if (row != -1) { 
+        // 3. Kuhaa ang Bill ID (Column 0) ug Amount (Column 1)
+        String bill_id = mybillstable.getValueAt(row, 0).toString();
+        String amount = mybillstable.getValueAt(row, 1).toString();
+
+        // 4. Ablihi ang PayBill window ug i-pasa ang data
+        PayBill pb = new PayBill(bill_id, amount); 
+        pb.setVisible(true);
+        
+        // (Optional) I-close o i-hide kini nga window
+        this.dispose(); 
+    } else {
+        // Kung walay gi-select, pakit-on ang user og message
+        JOptionPane.showMessageDialog(this, "Palihog pagpili una og bill sa table!");
+    }
+
     }//GEN-LAST:event_paymybillsActionPerformed
 
     private void logoutbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseClicked
@@ -523,24 +529,21 @@ public class UserBills extends javax.swing.JFrame {
     }//GEN-LAST:event_viewstatementofaccountActionPerformed
 
     private void viewreceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewreceiptActionPerformed
-        int selectedRow = mybillstable.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a bill to view receipt.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+     int row = mybillstable.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a bill first!");
+        return;
+    }
 
-        String status = (String) mybillstable.getValueAt(selectedRow, 6);
-        if (!"Paid".equalsIgnoreCase(status)) {
-            JOptionPane.showMessageDialog(this, "Receipt is only available for paid bills.", "Invalid Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    // Kuhaon ang data gikan sa selected row
+    String id = mybillstable.getValueAt(row, 0).toString();
+    String amount = mybillstable.getValueAt(row, 1).toString();
+    String status = mybillstable.getValueAt(row, 2).toString();
 
-        int billId = (int) mybillstable.getValueAt(selectedRow, 0);
-
-        // Open BillsReceipt window and pass billId
-        Bills.BillReceipt receiptWindow = new Bills.BillReceipt();
-        receiptWindow.loadReceipt(billId);
-        receiptWindow.setVisible(true);
+    // Ablihan ang BillReceipt frame
+    BillReceipt receipt = new BillReceipt();
+    receipt.setVisible(true);
+    
     }//GEN-LAST:event_viewreceiptActionPerformed
 
     private void searchfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchfieldActionPerformed
@@ -597,19 +600,19 @@ public class UserBills extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void displayBills() {
+   public void displayBills() {
     DefaultTableModel model = (DefaultTableModel) mybillstable.getModel();
-    model.setRowCount(0); 
+    model.setRowCount(0); // I-clear ang table para presko ang display
 
     try {
         config conf = new config();
         Connection conn = conf.connectDB(); 
         
-        // Siguroha nga 'u_username' o 'username' ang column name sa imong DB
-        String sql = "SELECT bill_id, b_amount, b_due_date, b_status FROM bills WHERE username = ?";
+        // SAKTONG SQL: 'due_date' ang column name sa imong ebs.db
+        String sql = "SELECT bill_id, b_amount, due_date, b_status FROM bills WHERE username = ?";
         
         PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, this.name); // 'this.name' ang naggunit sa kinsa ang naka-login
+        pst.setString(1, this.name); // 'this.name' mao ang 'l' o ang logged-in user
         
         ResultSet rs = pst.executeQuery();
 
@@ -617,15 +620,18 @@ public class UserBills extends javax.swing.JFrame {
             model.addRow(new Object[]{
                 rs.getInt("bill_id"),      
                 rs.getString("b_amount"),   
-                rs.getString("b_due_date"), 
+                rs.getString("due_date"), 
                 rs.getString("b_status")    
             });
         }
+        
+        System.out.println("DEBUG: Successfully loaded " + model.getRowCount() + " transactions for " + this.name);
+        
         rs.close();
         pst.close();
         conn.close();
     } catch (Exception e) {
-        e.printStackTrace();
+        System.out.println("Error: " + e.getMessage());
     }
 }
     private static class db {

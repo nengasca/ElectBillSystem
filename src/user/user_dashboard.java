@@ -518,7 +518,7 @@ public class user_dashboard extends javax.swing.JFrame {
         con = DriverManager.getConnection("jdbc:sqlite:ebs.db");
         
         // Kini nga query mokuha sa bills depende sa status ('Pending' o 'Paid')
-        String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE b_status = ? AND username = ?";
+        String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE username = '" + this.name + "'";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, status);
         pst.setString(2, this.name); // 'this.name' ang naggunit sa logged-in user

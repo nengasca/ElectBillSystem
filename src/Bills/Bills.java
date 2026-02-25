@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -29,25 +30,24 @@ import java.util.logging.Logger;
  */
 // Sa sulod sa Bills.java
 public class Bills extends javax.swing.JFrame {
-    String name;
+    String name; // Mao ni ang naggunit sa username
     config db = new config();
     private Color hoverColor;
     private Color defaultColor;
+    private String currentUsername;
 
-    public Bills() {
+    // Usba kini nga constructor:
+    public Bills(String loginName) {
         initComponents();
-        displayData(); 
+        this.name = loginName; // I-save ang username nga gi-pasa
+        displayData();
     }
 
-    private Bills(String name) {
+    public Bills() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void displayData() {
-    // I-filter ang query gamit ang 'username' (siguroha nga husto ang column name sa imong DB)
-    String query = "SELECT bill_id, b_amount, b_status FROM bills WHERE username = '" + this.name + "'"; 
-    db.populateTable(query, billstable); 
-}
+
 
 
     /**
@@ -80,13 +80,13 @@ public class Bills extends javax.swing.JFrame {
         logsbtn = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        billstable = new javax.swing.JTable();
         welcometxt1 = new javax.swing.JLabel();
         searchfield = new javax.swing.JTextField();
         searchbtn = new javax.swing.JButton();
         addbills = new javax.swing.JButton();
         editbill = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        billstable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -251,18 +251,6 @@ public class Bills extends javax.swing.JFrame {
 
         jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 490));
 
-        billstable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(billstable);
-
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 470, 310));
-
         welcometxt1.setBackground(new java.awt.Color(0, 0, 0));
         welcometxt1.setFont(new java.awt.Font("Lucida Calligraphy", 1, 24)); // NOI18N
         welcometxt1.setText("Manage Bills");
@@ -313,9 +301,22 @@ public class Bills extends javax.swing.JFrame {
         });
         jPanel3.add(editbill, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, 60, 30));
 
+        billstable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(billstable);
+
+        jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, -1, 290));
+
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 748, 497));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbtnMouseClicked
@@ -350,9 +351,9 @@ public class Bills extends javax.swing.JFrame {
     }//GEN-LAST:event_userbtnMouseExited
 
     private void billsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_billsbtnMouseClicked
-    Bills b = new Bills(this.name); // I-pasa ang name sa user
+    Bills b = new Bills(this.name); 
     b.setVisible(true);
-    this.dispose();
+    this.dispose(); // I-close ang dashboard para mobalhin sa Bills
 
     }//GEN-LAST:event_billsbtnMouseClicked
 
@@ -404,44 +405,21 @@ public class Bills extends javax.swing.JFrame {
     }//GEN-LAST:event_logsbtnMouseExited
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
-        // 1. Kuhaa ang text gikan sa search bar
-String searchText = searchfield.getText().trim();
-
-if (searchText.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter search text.");
-    return;
-}
-
-try {
-    // 2. I-define ang imong SQL query string
-    String query = "SELECT b.b_id, u.account_number, b.b_month, b.kwh_used, b.b_amount, b.b_due_date, b.b_status " +
-                   "FROM tbl_bill b JOIN users u ON b.user_id = u.id " +
-                   "WHERE ..."; // sumpay sa imong LIKE conditions
-
-    // --- MAO KINI ANG IMONG GI-INSERT ---
-    // 1. I-initialize ang imong config class (gamit ang husto nga class name)
-     config conf = new config(); 
-
-// 2. Tawga ang connectDB() method nga naa sa imong config.java
-    Connection con = conf.connectDB(); 
-
-    if (con != null) {
-    PreparedStatement pst = con.prepareStatement(query);
-    // ... padayon sa imong code
-}
-    // 3. I-prepare ang statement gamit ang 'con' nga bag-o lang nimo gi-initialize
-    PreparedStatement pst = con.prepareStatement(query);
+    String searchTxt = searchfield.getText().trim();
     
-    String likeText = "%" + searchText + "%";
-    for (int i = 1; i <= 7; i++) {
-        pst.setString(i, likeText);
+    // I-filter ang search base sa username aron dili makita ang bills sa uban
+    String query = "SELECT bill_id AS 'Bill ID', b_amount AS 'Amount', "
+                 + "b_status AS 'Status', due_date AS 'Due Date' "
+                 + "FROM bills WHERE username = '" + this.name + "' "
+                 + "AND (bill_id LIKE '%" + searchTxt + "%' OR b_status LIKE '%" + searchTxt + "%')";
+    
+    try {
+        ResultSet rs = db.getData(query);
+        billstable.setModel(DbUtils.resultSetToTableModel(rs));
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Search Error: " + e.getMessage());
     }
 
-    // 4. I-execute ang query
-    ResultSet rs = pst.executeQuery();
-}       catch (SQLException ex) {
-            Logger.getLogger(Bills.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_searchbtnActionPerformed
 
     private void addbillsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbillsActionPerformed
@@ -463,13 +441,6 @@ try {
     }//GEN-LAST:event_editbillActionPerformed
 
     private void searchfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyReleased
-    String searchData = searchfield.getText();
-    
-    // I-filter ang bills base sa Account Number o Month
-    String query = "SELECT * FROM bills WHERE accnum LIKE '%" + searchData + "%' "
-                 + "OR b_month LIKE '%" + searchData + "%'";
-    
-    db.populateTable(query, billstable);
 
     }//GEN-LAST:event_searchfieldKeyReleased
 
@@ -507,7 +478,7 @@ try {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel logoutbtn;
     private javax.swing.JPanel logsbtn;
     private javax.swing.JPanel paymentbtn;
@@ -522,6 +493,29 @@ try {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void displayData() {
+    try {
+        // 1. Siguruha nga ang query mokuha sa data gikan sa 'bills' table
+        // Gigamit nato ang 'this.name' para i-filter ang records sa maong user lang
+        String query = "SELECT bill_id AS 'Bill ID', b_amount AS 'Amount', "
+                     + "b_status AS 'Status', due_date AS 'Due Date' "
+                     + "FROM bills WHERE username = '" + this.name + "'";
+        
+        ResultSet rs = db.getData(query);
+        
+        // 2. I-check ang variable name sa imong JTable. 
+        // Siguruha nga 'billstable' ang name niini sa Design View.
+        billstable.setModel(DbUtils.resultSetToTableModel(rs)); 
+        
+        System.out.println("DEBUG: Data successfully loaded for: " + this.name);
+        
+    } catch (SQLException e) {
+        System.out.println("Error loading table: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("General Error: " + e.getMessage());
+    }
+}
     public static class StatementOfAccount {
 
         public StatementOfAccount() {
